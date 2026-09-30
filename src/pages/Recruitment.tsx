@@ -1,0 +1,17 @@
+import {useEffect,useMemo,useState} from 'react'
+import type {Session} from '@supabase/supabase-js'
+import {supabase} from '../lib/supabase'
+
+const steps=['Identité','Vie professionnelle','Expérience','Motivation','Documents','Vérification']
+export function Recruitment({session,onBack}:{session:Session;onBack:()=>void}){
+ const [step,setStep]=useState(0),[name,setName]=useState(''),[busy,setBusy]=useState(true),[error,setError]=useState(''),[sent,setSent]=useState(false)
+ const [f,setF]=useState<any>({nationality:'',birth_date:'',phone:'',irl_age:'',employed:null,company:'',job_role:'',law_enforcement_experience:null,experience_details:'',motivation:'',identity_card_url:'',driving_license_url:'',fitness_certificate_url:''})
+ useEffect(()=>{(async()=>{try{if(!session.provider_token){setError('Une nouvelle identification est nécessaire.');return}const {data,error:e}=await supabase.functions.invoke('sync-public-identity',{body:{provider_token:session.provider_token}});if(e||!data?.ok)throw e||new Error('Identité indisponible');setName(data.display_name)}catch(e:any){setError(e.message||'Identification impossible')}finally{setBusy(false)}})()},[session])
+ const required=useMemo(()=>[name,f.nationality,f.birth_date,f.phone,f.irl_age,f.employed!==null,f.employed===false||(f.company&&f.job_role),f.law_enforcement_experience!==null,f.law_enforcement_experience===false||f.experience_details,f.motivation,f.identity_card_url,f.driving_license_url,f.fitness_certificate_url],[name,f])
+ const progress=Math.round(required.filter(Boolean).length/required.length*100),set=(k:string,v:any)=>setF((x:any)=>({...x,[k]:v}))
+ async function submit(){if(progress<100){setError('Le dossier doit être complet avant son envoi.');return}setBusy(true);try{const {data:p}=await supabase.from('public_profiles').select('external_id').eq('auth_user_id',session.user.id).single();const {error:e}=await supabase.from('applications').insert({auth_user_id:session.user.id,discord_id:p?.external_id,display_name:name,...f,irl_age:Number(f.irl_age),progress:100,submitted_at:new Date().toISOString(),status:'pending'});if(e)throw e;setSent(true)}catch(e:any){setError(e.message||'Envoi impossible')}finally{setBusy(false)}}
+ if(sent)return <div className="recruit-shell"><div className="recruit-success"><b>CANDIDATURE TRANSMISE</b><h1>Dossier enregistré</h1><p>Votre candidature a été transmise au service compétent. Vous serez informé de son évolution par message.</p><button onClick={onBack}>RETOUR À L'ACCUEIL</button></div></div>
+ return <div className="recruit-shell"><header className="recruit-top"><button onClick={onBack}>← ACCUEIL</button><b>DOSSIER DE RECRUTEMENT</b><span>{progress}%</span></header><div className="progress"><i style={{width:progress+'%'}}/></div><main className="recruit-card"><div className="stepper">{steps.map((s,i)=><button key={s} className={i===step?'active':''} onClick={()=>setStep(i)}><span>{i+1}</span>{s}</button>)}</div><section className="recruit-form"><small>ÉTAPE {step+1} / {steps.length}</small><h1>{steps[step]}</h1>
+ {busy&&step===0?<p>Récupération de votre identité…</p>:<Fields step={step} name={name} f={f} set={set} progress={progress}/>}
+ {error&&<div className="public-alert">{error}</div>}<div className="form-nav"><button disabled={step===0} onClick={()=>setStep(x=>Math.max(0,x-1))}>PRÉCÉDENT</button>{step<5?<button onClick={()=>setStep(x=>Math.min(5,x+1))}>SUIVANT</button>:<button disabled={busy||progress<100} onClick={()=>void submit()}>ENVOYER LA CANDIDATURE</button>}</div></section></main></div>
+}
