@@ -28,3 +28,11 @@ npm run build
 ```
 
 Le projet est configuré pour être publié sur GitHub Pages sous `/LSPD-Panel/`.
+## Authentification et rôle développeur
+
+Le panel prévoit un rôle applicatif permanent `developer`, distinct des grades LSPD.
+
+- Le rôle `developer` dispose des droits d'administration du panel.
+- L'autorisation doit être vérifiée côté serveur/Supabase après authentification Discord, jamais uniquement dans le frontend.
+- Les identifiants Discord autorisés doivent être stockés dans la configuration sécurisée / base de données et ne doivent pas être publiés dans le dépôt.
+- Ce rôle n'est pas affecté par les changements de grade ou d'unité LSPD.
