@@ -1,140 +1,75 @@
-import { useMemo, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, BadgeDollarSign, Moon, Shield, Sun } from 'lucide-react'
-import { FINES_PREVIEW, TILE_SECTIONS, type TabKey } from '../lib/tiles'
+import { useState } from 'react'
+import { BadgeAlert, Car, FileText, Radio, Search, Shield, Siren, UserRoundSearch, Users, LogOut, ChevronRight } from 'lucide-react'
 
-type Theme = 'dark' | 'light'
+const stats = [
+  ['Agents', '1', Users], ['Véhicules', '0', Car], ['Mandats', '0', BadgeAlert],
+  ['BOLO', '0', Siren], ['Rapports', '0', FileText], ['Unités', '0', Radio],
+] as const
+
+const modules = [
+  ['Citoyens', 'Identités, antécédents et dossiers', UserRoundSearch],
+  ['Los Santos Police Department', 'Effectifs, unités et administration', Shield],
+  ['Véhicules', 'Plaques, propriétaires et signalements', Car],
+] as const
 
 export function Dashboard() {
-  const [active, setActive] = useState<TabKey | null>(null)
-  const [theme, setTheme] = useState<Theme>('dark')
-  const section = useMemo(() => TILE_SECTIONS.find((item) => item.key === active), [active])
+  const [query, setQuery] = useState('')
+  return <div className="mdt">
+    <header className="topbar">
+      <div className="wordmark"><span className="mini-shield"><Shield size={16}/></span><div><b>LSPD MDT</b><small>MOBILE DATA TERMINAL</small></div></div>
+      <div className="searchbar"><select aria-label="Type de recherche"><option>Recherche globale</option><option>Citoyen</option><option>Plaque</option><option>Rapport</option></select><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Rechercher un nom, une plaque, un dossier..."/><button><Search size={15}/> RECHERCHER</button></div>
+      <button className="logout"><LogOut size={14}/> Déconnexion</button>
+    </header>
 
-  function toggleTheme() {
-    const next = theme === 'dark' ? 'light' : 'dark'
-    setTheme(next)
-    document.documentElement.dataset.theme = next
-  }
-
-  return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <div className="brand-mark"><Shield size={24} /></div>
-        <button className="icon-btn" onClick={() => setActive(null)} aria-label="Accueil">⌂</button>
-        <div className="sidebar-spacer" />
-        <button className="icon-btn" onClick={toggleTheme} aria-label="Changer le thème">
-          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
+    <div className="mdt-grid">
+      <aside className="left-rail">
+        <Panel title="PROFIL OPÉRATEUR">
+          <div className="operator"><div className="avatar">DEV</div><div><b>Développeur</b><small>Accès permanent</small><span className="tag green">AUTORISÉ</span></div></div>
+          <div className="dept-card active"><Shield size={25}/><div><b>LOS SANTOS PD</b><small>Administration système</small><div><span className="tag">DEV</span><span className="tag">ADMIN</span></div></div></div>
+        </Panel>
+        <Panel title="AFFECTATION PRINCIPALE"><RailItem icon={<Shield/>} title="Los Santos PD" sub="Administration · Développeur"/></Panel>
+        <Panel title="OUTILS"><Nav label="Citoyens"/><Nav label="Effectifs"/><Nav label="Rapports"/><Nav label="Véhicules"/></Panel>
+        <Panel title="ADMINISTRATION"><Nav label="Gestion des membres"/><Nav label="Grades & permissions"/><Nav label="Paramètres LSPD"/></Panel>
       </aside>
 
-      <main className="content">
-        <AnimatePresence mode="wait">
-          {!active ? (
-            <motion.section
-              key="home"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              className="page"
-            >
-              <div className="hero">
-                <div>
-                  <p className="eyebrow">LOS SANTOS POLICE DEPARTMENT</p>
-                  <h1>Officer Dashboard</h1>
-                  <p className="muted">Centre opérationnel, effectifs et dossiers LSPD.</p>
-                </div>
-                <div className="status-chip">● Système opérationnel</div>
-              </div>
+      <main className="main">
+        <section className="hero-mdt">
+          <div><p className="kicker">TABLEAU DE BORD <span className="tag">BETA</span></p><h1>Mobile Data Terminal</h1><p>Centre de commandement LSPD pour les agents, véhicules, mandats, signalements et rapports.</p></div>
+          <div className="dept-summary"><Shield size={42}/><div><small>DÉPARTEMENT PRINCIPAL</small><b>LOS SANTOS PD</b><span>Los Santos, San Andreas</span></div></div>
+        </section>
 
-              <div className="tiles">
-                {TILE_SECTIONS.map((item) => {
-                  const Icon = item.icon
-                  return (
-                    <button key={item.key} className="tile" onClick={() => setActive(item.key)}>
-                      <div className="tile-icon" style={{ background: item.color }}><Icon size={21} /></div>
-                      <div>
-                        <strong>{item.label}</strong>
-                        <span>{item.description}</span>
-                      </div>
-                    </button>
-                  )
-                })}
-              </div>
-            </motion.section>
-          ) : (
-            <motion.section
-              key={active}
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -12 }}
-              className="page"
-            >
-              <button className="back-btn" onClick={() => setActive(null)}><ArrowLeft size={16} /> Retour</button>
-              <div className="section-heading">
-                <div className="tile-icon" style={{ background: section?.color }}>{section && <section.icon size={22} />}</div>
-                <div>
-                  <p className="eyebrow">LSPD PANEL</p>
-                  <h2>{section?.label}</h2>
-                  <p className="muted">{section?.description}</p>
-                </div>
-              </div>
+        <section className="stats">{stats.map(([label,value,Icon])=><div className="stat" key={label}><Icon size={15}/><strong>{value}</strong><span>{label}</span></div>)}</section>
 
-              {active === 'reports' ? (
-                <div className="panel-grid">
-                  <article className="panel">
-                    <h3>Nouveau rapport</h3>
-                    <label>Titre<input placeholder="Ex. Braquage supérette Strawberry" /></label>
-                    <label>Agents impliqués<input placeholder="Matricules / noms" /></label>
-                    <label>Compte rendu<textarea rows={7} placeholder="Déroulé de l’intervention..." /></label>
-                    <button className="primary-btn">Enregistrer le rapport</button>
-                  </article>
-                  <article className="panel">
-                    <h3>Derniers rapports</h3>
-                    <div className="empty-state">Aucun rapport enregistré pour le moment.</div>
-                  </article>
-                </div>
-              ) : active === 'wanted' ? (
-                <div className="panel-grid">
-                  <article className="panel">
-                    <h3>Nouveau signalement</h3>
-                    <label>Individu<input placeholder="Nom Prénom" /></label>
-                    <label>Motif<input placeholder="Motif du mandat / BOLO" /></label>
-                    <label>Niveau de priorité<select><option>Standard</option><option>Élevé</option><option>Critique</option></select></label>
-                    <button className="primary-btn">Publier</button>
-                  </article>
-                  <article className="panel">
-                    <h3>Actifs</h3>
-                    <div className="empty-state">Aucun mandat actif.</div>
-                  </article>
-                </div>
-              ) : active === 'management' ? (
-                <div className="panel-grid">
-                  <article className="panel">
-                    <h3>Barème rapide</h3>
-                    {FINES_PREVIEW.map((fine) => (
-                      <div className="fine-row" key={fine.label}>
-                        <span>{fine.label}</span>
-                        <strong><BadgeDollarSign size={14} /> {fine.amount}$</strong>
-                      </div>
-                    ))}
-                  </article>
-                  <article className="panel">
-                    <h3>Administration</h3>
-                    <div className="empty-state">Gestion des grades, habilitations et paramètres à connecter à Supabase.</div>
-                  </article>
-                </div>
-              ) : (
-                <article className="panel">
-                  <h3>{section?.label}</h3>
-                  <div className="empty-state">
-                    Module LSPD prêt à être connecté aux données. La structure UI est en place.
-                  </div>
-                </article>
-              )}
-            </motion.section>
-          )}
-        </AnimatePresence>
+        <Section title="TERMINAUX & MODULES">
+          <div className="module-grid">{modules.map(([title,sub,Icon])=><button className="module" key={title}><span className="module-icon"><Icon size={20}/></span><span><b>{title}</b><small>{sub}</small><i>OUVRIR</i></span></button>)}</div>
+        </Section>
+
+        <div className="three-cols">
+          <Section title="MANDATS ACTIFS" badge="0"><Empty text="Aucun mandat actif."/></Section>
+          <Section title="BOLO ACTIFS" badge="0"><Empty text="Aucun signalement actif."/></Section>
+          <Section title="CONTRAVENTIONS RÉCENTES" badge="0"><Empty text="Aucune contravention récente."/></Section>
+        </div>
+
+        <div className="two-cols">
+          <Section title="UNITÉS EN SERVICE" badge="0"><Empty text="Aucune unité actuellement en service."/></Section>
+          <Section title="EFFECTIF LSPD"><div className="roster"><div className="avatar small">DEV</div><div><b>Développeur</b><small>Administration système</small></div><span className="tag green">EN LIGNE</span></div></Section>
+        </div>
       </main>
+
+      <aside className="right-rail">
+        <Panel title="STATUT SYSTÈME"><Status label="Base de données" ok={false}/><Status label="Session" ok/><Status label="Discord" ok={false}/></Panel>
+        <Panel title="RADIO"><RailItem icon={<Radio/>} title="Dispatch principal" sub="Canal à configurer"/><button className="wide-btn">VOIR LES CANAUX</button></Panel>
+        <Panel title="RECHERCHE RAPIDE"><button className="quick">CODES PÉNAUX</button><button className="quick">PLAQUE VÉHICULE</button><button className="quick">NOM CITOYEN</button><button className="quick">N° RAPPORT</button></Panel>
+        <Panel title="DOSSIERS RÉCENTS"><Empty text="Aucun dossier récent."/></Panel>
+      </aside>
     </div>
-  )
+    <footer>LSPD MOBILE DATA TERMINAL · SYSTÈME INTERNE <span>VERSION 0.2 BETA</span></footer>
+  </div>
 }
+
+function Panel({title,children}:{title:string,children:React.ReactNode}) { return <section className="rail-panel"><h3>{title}</h3>{children}</section> }
+function Section({title,badge,children}:{title:string,badge?:string,children:React.ReactNode}) { return <section className="section"><div className="section-title"><b>{title}</b>{badge&&<span>{badge}</span>}</div><div className="section-body">{children}</div></section> }
+function Empty({text}:{text:string}) { return <div className="empty">{text}</div> }
+function Nav({label}:{label:string}) { return <button className="nav">{label}<ChevronRight size={13}/></button> }
+function RailItem({icon,title,sub}:{icon:React.ReactNode,title:string,sub:string}) { return <div className="rail-item"><span>{icon}</span><div><b>{title}</b><small>{sub}</small></div></div> }
+function Status({label,ok}:{label:string,ok:boolean}) { return <div className="status"><div><b>{label}</b><small>{ok?'Opérationnel':'À configurer'}</small></div><i className={ok?'ok':'bad'}/></div> }
