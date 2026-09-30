@@ -6,7 +6,7 @@ export async function getDutyHistory(){const {data,error}=await supabase.from('d
 export async function getContent(type?:string){let q=supabase.from('content_items').select('id,content_type,title,category,summary,body,external_url,updated_at').eq('published',true).order('category').order('title');if(type)q=q.eq('content_type',type);const {data,error}=await q;if(error)throw error;return data??[]}
 export async function getActiveUnits(){const {data,error}=await supabase.from('units').select('id,name,status,service_vehicle_id,created_at,unit_members(staff_id,staff:staff_id(id,display_name,badge_number,rank,duty_status)),service_vehicle:service_vehicle_id(id,name,category)').eq('active',true).order('created_at',{ascending:false});if(error)throw error;return (data??[]).map((u:any)=>({...u,members:u.unit_members?.map((m:any)=>m.staff).filter(Boolean)??[],designation:(u.unit_members?.length??0)===1?'Lincoln':(u.unit_members?.length??0)===2?'Adam':'Unité'}))}
 export async function getVehicles(){const {data,error}=await supabase.from('service_vehicles').select('*').eq('active',true).order('sort_order').order('name');if(error)throw error;return data??[]}
-export async function createUnitAndJoin(name:string){return supabase.rpc('create_and_join_lspd_unit',{p_name:name})}
+export async function startService(vehicleId:string|null){return supabase.rpc('start_lspd_service',{p_vehicle:vehicleId})}
 export async function joinUnit(unitId:string){return supabase.rpc('join_lspd_unit',{p_unit:unitId})}
 export async function leaveService(){return supabase.rpc('leave_lspd_service')}
 export async function setUnitVehicle(unitId:string,vehicleId:string|null){return supabase.from('units').update({service_vehicle_id:vehicleId}).eq('id',unitId)}
