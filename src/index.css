@@ -79,3 +79,31 @@
 
 /* Rank administration — Unified MDT */
 .rank-admin{background:transparent!important;border:0!important}.rank-admin-intro{display:flex;justify-content:space-between;align-items:flex-end;padding:20px 22px;border:1px solid #202d37;border-left:2px solid #2d8edc;border-radius:7px;background:linear-gradient(135deg,#0d141a,#070a0d);margin-bottom:8px}.rank-admin-intro small,.rank-create small,.rank-category-card header small{color:#5daef3;font-size:8px;font-weight:900;letter-spacing:.16em}.rank-admin-intro h2{margin:5px 0;font-size:22px}.rank-admin-intro p{margin:0;color:#8294a3;font-size:10px}.rank-stats{display:flex;gap:6px}.rank-stats span{min-width:82px;padding:9px;border:1px solid #273947;background:#0c151c;text-align:center;color:#788d9e;font-size:7px;font-weight:900}.rank-stats b{display:block;color:#68b7fa;font-size:17px}.rank-create{display:grid;grid-template-columns:1fr 1fr auto;gap:7px;padding:9px;border:1px solid #202a31;background:#070b0e;border-radius:6px;margin-bottom:8px}.rank-create>div{display:flex;flex-direction:column;gap:5px}.rank-create input,.rank-edit input,.rank-edit select{height:34px;padding:7px 9px;border:1px solid #2b3a46;border-radius:4px;background:#090e12;color:#e8f1f8;outline:none}.rank-create input:focus,.rank-edit input:focus,.rank-edit select:focus{border-color:#348bd2}.rank-create>button,.rank-edit-actions button{align-self:end;height:34px;padding:0 14px;border:1px solid #3678ae;border-radius:4px;background:#123252;color:#74bdf9;font-size:8px;font-weight:900}.rank-category-stack{display:flex;flex-direction:column;gap:7px}.rank-category-card{border:1px solid #202c35;border-radius:6px;overflow:hidden;background:#070b0e}.rank-category-card>header{min-height:62px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:linear-gradient(90deg,#0d151c,#080c0f);border-bottom:1px solid #24313a}.rank-category-card>header>div:first-child{display:flex;align-items:center;gap:10px}.rank-category-index{width:34px;height:34px;display:grid;place-items:center;border:1px solid #286da4;background:#0c2234;color:#65b6f8;font-size:9px;font-weight:900}.rank-category-card h3{margin:2px 0;font-size:13px;letter-spacing:.04em}.rank-category-card em{display:block;color:#667b8c;font-size:8px;font-style:normal}.permission-pills,.rank-extra-access{display:flex;gap:4px;flex-wrap:wrap}.permission-pills button,.rank-extra-access button{height:25px;padding:0 8px;border:1px solid #303b43;background:#0b1014;color:#657582;border-radius:3px;font-size:7px;font-weight:900;letter-spacing:.05em}.permission-pills button{display:flex;align-items:center;gap:5px}.permission-pills i{width:5px;height:5px;border-radius:50%;background:#4d5961}.permission-pills button.enabled,.rank-extra-access button.enabled{border-color:#276da5;background:#0d263a;color:#69b9fb}.permission-pills button.enabled i{background:#51b3ff;box-shadow:0 0 7px #51b3ff}.rank-rows{padding:5px}.rank-row{display:grid;grid-template-columns:minmax(220px,1fr) auto 75px;align-items:center;gap:8px;min-height:51px;padding:7px 8px;border:1px solid transparent;border-bottom-color:#192229}.rank-row:last-child{border-bottom-color:transparent}.rank-row:hover{background:#0b1116;border-color:#22313c}.rank-identity{display:flex;align-items:center;gap:9px}.rank-identity svg{color:#4d9fe4}.rank-identity strong,.rank-identity small{display:block}.rank-identity strong{font-size:11px}.rank-identity small{margin-top:3px;color:#617789;font-size:7px;letter-spacing:.05em}.rank-edit-btn{height:27px;border:1px solid #2a3d4c;background:#0d151b;color:#8da5b8;border-radius:3px;font-size:7px;font-weight:900}.rank-row.editing{background:#0b1218;border-color:#28465d}.rank-edit{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:7px;padding:10px;margin-top:3px;border-top:1px solid #23323d;background:#080d11}.rank-edit label{display:flex;flex-direction:column;gap:4px;color:#668196;font-size:7px;font-weight:900}.rank-edit-actions{display:flex;align-items:end;gap:5px}.rank-edit-actions .danger{border-color:#66363a;background:#261216;color:#e98188}.rank-empty{padding:17px;text-align:center;color:#526674;font-size:8px}.settings-list.editable .rank-edit{width:100%}@media(max-width:850px){.rank-admin-intro{align-items:flex-start;flex-direction:column;gap:12px}.rank-create{grid-template-columns:1fr}.rank-create>button{width:100%}.rank-category-card>header{align-items:flex-start;flex-direction:column}.rank-row{grid-template-columns:1fr}.rank-extra-access{justify-content:flex-start}.rank-edit{grid-template-columns:1fr}.rank-edit-btn{width:100%}}
+
+
+/* Rank administration — readability pass */
+.rank-admin-intro small,.rank-create small,.rank-category-card header small{font-size:10px}
+.rank-admin-intro h2{font-size:26px}
+.rank-admin-intro p{font-size:12px;line-height:1.5}
+.rank-stats span{min-width:96px;padding:11px;font-size:9px}
+.rank-stats b{font-size:21px}
+.rank-create{padding:12px;gap:10px}
+.rank-create input,.rank-edit input,.rank-edit select{height:40px;padding:9px 11px;font-size:12px}
+.rank-create>button,.rank-edit-actions button{height:40px;padding:0 16px;font-size:10px}
+.rank-category-card>header{min-height:76px;padding:13px 15px}
+.rank-category-index{width:40px;height:40px;font-size:11px}
+.rank-category-card h3{font-size:17px;margin:3px 0}
+.rank-category-card em{font-size:10px}
+.permission-pills button,.rank-extra-access button{height:31px;padding:0 10px;font-size:9px}
+.permission-pills i{width:7px;height:7px}
+.rank-rows{padding:7px}
+.rank-row{grid-template-columns:minmax(250px,1fr) auto 92px;min-height:64px;padding:10px 11px;gap:10px}
+.rank-identity{gap:11px}
+.rank-identity svg{width:21px;height:21px}
+.rank-identity strong{font-size:14px}
+.rank-identity small{margin-top:4px;font-size:9px}
+.rank-edit-btn{height:33px;font-size:9px}
+.rank-edit{gap:10px;padding:13px}
+.rank-edit label{gap:6px;font-size:9px}
+.rank-empty{padding:20px;font-size:10px}
+@media(max-width:850px){.rank-row{grid-template-columns:1fr}.rank-category-card h3{font-size:16px}.permission-pills button,.rank-extra-access button{font-size:9px}}
