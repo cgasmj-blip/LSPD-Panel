@@ -7,3 +7,43 @@
 .portal{background:#030505;min-height:100vh;font-size:11px}.portal-top{height:46px;padding:5px 9px;gap:10px;background:#050707;border-color:#1d2429}.portal-top .wordmark{min-width:165px}.portal-top nav{gap:4px}.portal-top nav button{padding:7px 10px;background:linear-gradient(180deg,#11171c,#0b1014);border-color:#28333b;color:#d9e3ec;font-size:8px;text-transform:uppercase;letter-spacing:.06em}.portal-top nav button:hover{border-color:#2779be;color:#6db9ff}.portal-layout{grid-template-columns:190px minmax(0,1fr) 0;gap:7px;padding:7px}.profile-card{padding:0;background:#060909;border-color:#20272c;border-radius:7px;overflow:hidden}.profile-card:before{content:'OPERATOR PROFILE';display:block;padding:7px 9px;border-bottom:1px solid #20272c;font-size:7px;font-weight:900;letter-spacing:.16em}.profile-card>.avatar{margin:11px auto 5px;width:42px;height:42px}.profile-card h2{font-size:12px;margin:6px 8px 1px}.profile-card>p{font-size:8px;margin-bottom:9px}.profile-card dl{margin:0 7px 8px;padding:8px;border:1px solid #1f4e76;border-left:2px solid #2789dc;border-radius:5px;background:#0b1218}.profile-card dt{font-size:7px}.profile-card dd{font-size:9px}.portal-main{gap:7px}.portal-main .hero-mdt{min-height:118px;padding:22px 26px;border-radius:7px;background:linear-gradient(145deg,#0c0f10,#060808);border-color:#20272c;border-left:2px solid #278ce1}.portal-main .hero-mdt h1{font-size:22px}.portal-main .hero-mdt>svg{width:42px;height:42px;color:#4ea7f4}.section{border-radius:6px;background:#050808;border-color:#20272c}.section-title{height:25px;padding:6px 9px;background:#070a0c;font-size:7px}.section-body{padding:6px}.content-grid{gap:6px}.content-card{min-height:76px;padding:10px;background:#10161c;border-color:#28343d;border-left:2px solid #278ce1}.content-card h3{font-size:10px;margin:4px 0}.content-card p{font-size:8px;margin:4px 0 7px}.content-card>small{font-size:7px}.roster-grid{gap:5px}.agent{min-height:48px;padding:7px;background:#10161c;border-color:#28343d}.agent b{font-size:9px}.agent small{font-size:7px}.service-box{padding:9px;background:#0e1419;border-color:#28343d}.service-box>b{font-size:10px}.service-box select,.manage-row input{height:29px;padding:5px 8px;font-size:9px}.wide-btn,.danger-btn{height:28px;padding:6px 9px;font-size:7px;letter-spacing:.05em}.wide-btn{background:linear-gradient(180deg,#58aef8,#287bc7);border-color:#62b8ff;color:#06101a}.content-card .wide-btn{margin:6px 0 0;width:100%}.history-list>div{min-height:37px;padding:7px;background:#10161c;border-color:#28343d}.logout{padding:6px 8px;font-size:8px}.portal:after{content:'LSPD MOBILE DATA TERMINAL • OFFICIAL DEPARTMENT SYSTEM';position:fixed;bottom:0;left:7px;right:7px;height:20px;display:flex;align-items:center;padding:0 10px;background:#050707;border:1px solid #1c2429;color:#4b9fe8;font-size:6px;font-weight:900;letter-spacing:.1em}.portal{padding-bottom:25px}@media(max-width:900px){.portal-layout{grid-template-columns:1fr}.profile-card{order:0}.portal-top{height:auto;flex-wrap:wrap}.portal-top nav{order:3;flex-basis:100%;overflow:auto}.portal:after{display:none}.portal{padding-bottom:0}}
 
 .rules-doc{border:1px solid #202a31;background:#070a0c;border-radius:6px;overflow:hidden}.rules-cover{text-align:center;padding:28px 20px;background:radial-gradient(circle at 50% 0,#10283d,#080c0f 58%);border-bottom:1px solid #27343d}.rules-cover svg{color:#5eb3ff}.rules-cover small,.rules-cover span{display:block;color:#6eaee4;font-size:7px;font-weight:900;letter-spacing:.2em}.rules-cover h2{font-size:25px;letter-spacing:.08em;margin:8px 0}.rules-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:10px;border-bottom:1px solid #202a31;background:#090d10}.rules-summary>b{grid-column:1/-1;color:#5daef4;font-size:8px;letter-spacing:.18em}.rules-summary a{padding:8px;border:1px solid #283640;background:#10171c;color:#c8d5df;text-decoration:none;font-size:8px}.rules-summary a:hover{border-color:#368fd8;color:#6db9ff}.rule-block{padding:20px 24px;border-bottom:1px solid #1f292f;scroll-margin-top:55px}.rule-heading{display:flex;align-items:center;gap:10px;margin-bottom:13px}.rule-heading span{display:grid;place-items:center;width:29px;height:29px;border:1px solid #246da9;background:#0d2132;color:#64b5fa;font-size:8px;font-weight:900}.rule-heading h3{margin:0;font-size:16px}.rule-block p,.rule-block li{font-size:11px;line-height:1.75;color:#aab6bf}.rule-block ul,.rule-block ol{padding-left:22px}.rule-block h4{margin-top:20px;color:#70b9f8;font-size:10px;text-transform:uppercase;letter-spacing:.08em}.rules-link,.rules-warning{margin:13px 0;padding:11px;border:1px solid #275d87;border-left:3px solid #3599e8;background:#0c1821;color:#76bcf8;font-size:9px;font-weight:800}.rules-warning{border-color:#7a4e27;border-left-color:#e39b45;background:#1b130b;color:#e7bd7e}.sanctions{margin:16px 0;border:1px solid #303a40;background:#090c0e}.sanction-head,.sanction-row{display:grid;grid-template-columns:1.7fr repeat(3,1fr)}.sanction-head b{padding:8px 5px;border-left:1px solid #303a40;background:#11171b;text-align:center;font-size:7px}.sanction-row>*{min-height:31px;border-top:1px solid #303a40;border-left:1px solid #303a40}.sanction-row strong{display:flex;align-items:center;padding:5px 9px;border-left:0;background:#0d1114;font-size:8px}.sanction-row i.ok{background:#173c2d}.sanction-row i.warn{background:#51491c}.sanction-row i.bad{background:#552326}.sanction-row i.discipline{background:#1f4b31}.rules-footer{position:static;height:auto;margin:0;border:0;border-top:1px solid #26343d;padding:12px 20px;background:#080c0f;color:#579fdc;font-size:7px;letter-spacing:.14em}.badge-setup input{width:100%;margin:5px 0;padding:7px;background:#070b0e;border:1px solid #30404c;color:#fff}.badge-setup .wide-btn{margin:0;width:100%}.badge-setup small{display:block;color:#ff8c92;margin-top:5px}@media(max-width:800px){.rules-summary{grid-template-columns:1fr 1fr}.sanction-head,.sanction-row{grid-template-columns:1.4fr repeat(3,1fr)}.sanction-head b{font-size:6px}.rule-block{padding:15px 12px}}
+
+/* Readability pass — keep MDT density without microscopic text */
+.portal{font-size:14px}
+.portal-top nav button{font-size:11px;padding:9px 12px}
+.logout{font-size:11px;padding:8px 10px}
+.profile-card:before{font-size:10px;padding:9px 10px}
+.profile-card h2{font-size:16px}
+.profile-card>p{font-size:11px}
+.profile-card dt{font-size:10px}
+.profile-card dd{font-size:12px}
+.portal-main .hero-mdt h1{font-size:28px}
+.portal-main .hero-mdt p{font-size:13px;line-height:1.55}
+.kicker{font-size:10px!important}
+.section-title{height:auto;min-height:32px;padding:9px 11px;font-size:10px}
+.content-card>small{font-size:10px}
+.content-card h3{font-size:14px}
+.content-card p{font-size:12px;line-height:1.5}
+.agent{min-height:58px;padding:10px}
+.agent b{font-size:13px}
+.agent small{font-size:10px}
+.tag{font-size:9px}
+.service-box>b{font-size:14px}
+.service-box>span{font-size:11px}
+.service-box select,.service-box input,.manage-row input{height:36px;padding:7px 10px;font-size:12px}
+.wide-btn,.danger-btn{height:35px;padding:8px 12px;font-size:10px}
+.history-list>div{min-height:46px;font-size:12px}
+.rules-cover small,.rules-cover span{font-size:10px}
+.rules-cover h2{font-size:31px}
+.rules-summary>b{font-size:11px}
+.rules-summary a{font-size:11px;padding:10px}
+.rule-heading span{width:34px;height:34px;font-size:11px}
+.rule-heading h3{font-size:20px}
+.rule-block p,.rule-block li{font-size:14px;line-height:1.8}
+.rule-block h4{font-size:13px}
+.rules-link,.rules-warning{font-size:12px;line-height:1.55}
+.sanction-head b{font-size:10px;padding:10px 6px}
+.sanction-row strong{font-size:11px;padding:8px 10px}
+.rules-footer{font-size:10px}
+.portal:after{font-size:8px}
+@media(max-width:800px){.portal{font-size:13px}.rule-block p,.rule-block li{font-size:13px}.rules-summary a{font-size:10px}.sanction-head b{font-size:8px}.sanction-row strong{font-size:9px}}
