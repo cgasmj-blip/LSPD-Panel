@@ -12,3 +12,5 @@ export async function leaveService(){return supabase.rpc('leave_lspd_service')}
 export async function setUnitVehicle(unitId:string,vehicleId:string|null){return supabase.from('units').update({service_vehicle_id:vehicleId}).eq('id',unitId)}
 export async function addVehicle(name:string,category='Patrouille'){return supabase.from('service_vehicles').insert({name,category})}
 export async function disableVehicle(id:string){return supabase.from('service_vehicles').update({active:false}).eq('id',id)}
+
+export async function chooseBadge(badge:string){return supabase.rpc('choose_my_badge_number',{p_badge:badge})}
