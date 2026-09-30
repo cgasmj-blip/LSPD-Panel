@@ -18,7 +18,7 @@ export default function App(){
  if(view==='regulation')return <Regulations onBack={()=>setView('home')} onVehicles={()=>setView('vehicles')}/>
  if(view==='vehicles')return <VehicleAssignments onBack={()=>setView('regulation')}/>
  if(loading)return <div className="auth-screen"><div className="auth-card">Chargement du portail…</div></div>
- const shown=view==='home'?content.filter(x=>x.content_type==='announcement'||x.content_type==='information'):content.filter(x=>x.content_type===view)
+ const shown=view==='home'?content.filter(x=>x.content_type==='announcement'||x.content_type==='information'):content.filter(x=>x.content_type==='information')
  return <div className="public-mdt">
   <header className="public-top"><div className="public-brand"><img src={logo} alt="LSPD"/><div><b>LOS SANTOS POLICE DEPARTMENT</b><small>PUBLIC ACCESS TERMINAL</small></div></div><button onClick={()=>void personnel()}>{checking?'VÉRIFICATION…':'CONNEXION PERSONNEL LSPD'}</button></header>
   <main className="public-wrap">
@@ -30,7 +30,7 @@ export default function App(){
     <button onClick={()=>setView('information')}><b>INFORMATIONS</b><span>Communiqués, affichages et informations complémentaires.</span></button>
    </section>
    {error&&<div className="public-alert">{error}</div>}
-   <section className="public-feed"><div className="public-section-title"><b>{view==='home'?'INFORMATIONS OFFICIELLES':view==='regulation'?'RÈGLEMENT':'INFORMATIONS & AFFICHAGES'}</b>{view!=='home'&&<button onClick={()=>setView('home')}>RETOUR À L'ACCUEIL</button>}</div>
+   <section className="public-feed"><div className="public-section-title"><b>{view==='home'?'INFORMATIONS OFFICIELLES':'INFORMATIONS & AFFICHAGES'}</b>{view!=='home'&&<button onClick={()=>setView('home')}>RETOUR À L'ACCUEIL</button>}</div>
     <div className="public-cards">{shown.length?shown.map(x=><article key={x.id}><small>{x.content_type}</small><h2>{x.title}</h2><p>{x.body}</p></article>):<div className="public-empty">Aucun contenu publié pour le moment.</div>}</div>
    </section>
   </main><footer className="public-footer">LSPD • MOBILE DATA TERMINAL • PUBLIC ACCESS</footer>
