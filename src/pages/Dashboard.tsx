@@ -8,7 +8,7 @@ export function Dashboard({staff}:{staff:Staff}){
  const refresh=async()=>{try{setUnits(await getServiceUnits())}catch(e:any){setError(e.message)}}
  useEffect(()=>{void refresh();void (async()=>{const {data}=await (await import('../lib/supabase')).supabase.rpc('my_panel_permissions');if(data)setPanelAccess(data)})();return subscribeService(()=>void refresh())},[])
  const myUnit=useMemo(()=>units.find(u=>u.service_unit_members?.some((m:any)=>m.staff_id===staff.id)),[units,staff.id])
- const completeAdam=units.some(u=>u.service_type==='adam'&&(u.service_unit_members?.length??0)>=2)
+ const completeAdam=units.some(u=>(u.service_unit_members?.length??0)===2)
  async function act(fn:()=>Promise<any>){setBusy(true);setError('');try{const r=await fn();if(r?.error)throw r.error;await refresh()}catch(e:any){setError(e.message||'Action impossible')}finally{setBusy(false)}}
  async function saveBadge(){await act(async()=>{const r=await chooseBadge(badge);if(r.error)throw r.error;staff.badge_number=badge.trim();return r})}
  const divisions=staff.divisions??[]
