@@ -2,7 +2,7 @@ import {useEffect,useState} from 'react'
 import type {Session} from '@supabase/supabase-js'
 import {supabase,signInDiscord,type Staff} from './lib/supabase'
 import {Dashboard} from './pages/Dashboard'
-const fields='id,display_name,rank,app_role,divisions,active'
+const fields='id,display_name,badge_number,rank,app_role,divisions,active'
 export default function App(){
  const [session,setSession]=useState<Session|null>(null),[staff,setStaff]=useState<Staff|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState('')
  useEffect(()=>{supabase.auth.getSession().then(({data})=>setSession(data.session));const {data:{subscription}}=supabase.auth.onAuthStateChange((_e,s)=>setSession(s));return()=>subscription.unsubscribe()},[])
