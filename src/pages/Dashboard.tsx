@@ -12,7 +12,7 @@ export function Dashboard({staff}:{staff:Staff}){
  async function act(fn:()=>Promise<any>){setBusy(true);setError('');try{const r=await fn();if(r?.error)throw r.error;await refresh()}catch(e:any){setError(e.message||'Action impossible')}finally{setBusy(false)}}
  async function saveBadge(){await act(async()=>{const r=await chooseBadge(badge);if(r.error)throw r.error;staff.badge_number=badge.trim();return r})}
  const divisions=staff.divisions??[]
- const divisionCallsign=(d:string)=>({SWAT:'Goliath',HSP:'Sierra',MARY:'Mary','K-9':'Canine',K9:'Canine','HÉLIPORTÉ':'Henry',HELIPORTE:'Henry','HÉLIPORTÉS':'Henry',HELIPORTES:'Henry',NAUTIQUE:'William',CYCLISTE:'Victor','BANALISÉ':'David',BANALISE:'David'} as Record<string,string>)[d.toUpperCase()]||d
+ const divisionCallsign=(d:string)=>({SWAT:'SWAT',DOA:'DOA',HSP:'HSP',MARY:'MARY','K-9':'K9',K9:'K9','HÉLIPORTÉ':'Henry',HELIPORTE:'Henry','HÉLIPORTÉS':'Henry',HELIPORTES:'Henry',NAUTIQUE:'William',CYCLISTE:'Victor','BANALISÉ':'David',BANALISE:'David'} as Record<string,string>)[d.toUpperCase()]||d
  const manager=!!panelAccess.management
  const settingsAccess=!!panelAccess.settings
  async function loadApplications(){if(!manager||!panelAccess.management_applications)return;const {data}=await (await import('../lib/supabase')).supabase.from('applications').select('*') .not('submitted_at','is',null).is('archived_at',null).order('created_at',{ascending:false});setApplications(data??[])}
