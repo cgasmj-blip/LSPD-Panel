@@ -122,3 +122,33 @@
 .archive-search input:focus{border-color:rgba(79,151,255,.65);box-shadow:0 0 0 2px rgba(79,151,255,.08)}
 .archive-search input::placeholder{color:#687483}
 .archive-search button{padding:0 14px;border:1px solid rgba(255,255,255,.12);border-radius:3px;background:#151b22;color:#aeb9c6;font-size:10px;font-weight:800;letter-spacing:.08em;cursor:pointer}
+
+
+/* Unified MDT button treatment — neutral/light buttons */
+.portal button:not(.tag):not(.danger),
+.public-mdt button,
+.auth-screen button{
+  border:1px solid #2b465b;
+  border-radius:4px;
+  background:linear-gradient(180deg,#101a22 0%,#0a1117 100%);
+  color:#b9d9f2;
+  font-weight:800;
+  letter-spacing:.06em;
+  cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+  transition:border-color .15s ease,background .15s ease,color .15s ease,box-shadow .15s ease,transform .15s ease;
+}
+.portal button:not(.tag):not(.danger):hover,
+.public-mdt button:hover,
+.auth-screen button:hover{
+  border-color:#3e8bc5;
+  background:linear-gradient(180deg,#142738 0%,#0b1923 100%);
+  color:#7fc5fa;
+  box-shadow:0 0 0 1px rgba(62,139,197,.08),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.portal button:not(.tag):not(.danger):active,
+.public-mdt button:active,
+.auth-screen button:active{transform:translateY(1px)}
+.portal button:disabled,.public-mdt button:disabled,.auth-screen button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.portal button.active{border-color:#3f91d0;background:#102a3d;color:#79c5ff;box-shadow:inset 3px 0 0 #4aa7eb}
+.global-back-top,.operation-back-top{margin-bottom:10px}
