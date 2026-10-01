@@ -26,7 +26,7 @@ export default function App(){
  const shown=view==='home'?content.filter(x=>x.content_type==='announcement'||x.content_type==='information'):content.filter(x=>x.content_type==='information')
  return <div className="public-mdt">
   <header className="public-top"><div className="public-brand"><img src={logo} alt="LSPD"/><div><b>LOS SANTOS POLICE DEPARTMENT</b><small>PUBLIC ACCESS TERMINAL</small></div></div><button onClick={()=>void personnel()}>{checking?'VÉRIFICATION…':'CONNEXION PERSONNEL LSPD'}</button></header>
-  <main className="public-wrap">
+  <main className="public-wrap">{view!=='home'&&<button className="back-link global-back-top" onClick={()=>setView(view==='vehicles'||view==='radio'?'regulation':'home')}>← RETOUR</button>}
    <section className="public-hero"><div><p>LOS SANTOS POLICE DEPARTMENT</p><h1>Servir. Protéger. Informer.</h1><span>Portail public officiel du département. Effectuez vos démarches et consultez les communications du LSPD depuis un point d'accès unique.</span></div><img src={logo} alt="Emblème LSPD"/></section>
    <section className="public-actions">
     <button onClick={()=>{sessionStorage.setItem('public-intent','recruitment');setIntent('recruitment');if(!session)void signInDiscord()}}><b>POSTULER</b><span>Déposer une candidature au LSPD.</span></button>
