@@ -31,8 +31,55 @@ export function Dashboard({staff}:{staff:Staff}){
  function openExistingOperation(operation:any){setSelectedOperation(operation);setOperationType(operation.operation_type);setOperationView('detail')}
  async function closeOperation(id:string){if(!operationType)return;setBusy(true);setError('');const now=new Date().toISOString();const draft=selectedOperation?.id===id&&operationType==='robbery'?robberyDetails:(operations.find((o:any)=>o.id===id)?.details||{});const archiveDate=draft.date?new Date(String(draft.date)+'T12:00:00').toLocaleDateString('fr-FR'):new Date(now).toLocaleDateString('fr-FR');const archiveTitle=operationType==='robbery'?['BRAQUAGE',String(draft.robbery_type||'TYPE NON RENSEIGNÉ').toUpperCase(),archiveDate].join(' · '):operationMeta[operationType][0];const {error:e}=await supabase.from('police_operations').update({status:'closed',title:archiveTitle,details:draft,final_details:draft,finalized_at:now,closed_at:now,updated_at:now}).eq('id',id).eq('status','active');setBusy(false);if(e)setError(e.message);else{setSelectedOperation(null);setOperationView('home');const {data}=await supabase.from('police_operations').select('*').eq('operation_type',operationType).eq('status','active').order('created_at',{ascending:false});setOperations(data||[])}}
  function consultArchive(operation:any){setSelectedOperation({...operation,details:operation.final_details||operation.details||{},_archive:true});setOperationType(operation.operation_type);setOperationView('detail')}
- function downloadArchivePng(operation:any){const d=operation.final_details||operation.details||{};const rows=[['OPÉRATION',operation.title||operationMeta[operation.operation_type]?.[0]||operation.operation_type],['RAPPORT OUVERT PAR',operation.opened_by?.display_name?operation.opened_by.display_name+(operation.opened_by.badge_number?' · Matricule '+operation.opened_by.badge_number:''):'Agent inconnu'],['CRÉÉE',new Date(operation.created_at).toLocaleString('fr-FR')],['CLÔTURÉE',operation.closed_at?new Date(operation.closed_at).toLocaleString('fr-FR'):'—'],...Object.entries(d).map(([k,v])=>[k.replace(/_/g,' ').toUpperCase(),Array.isArray(v)?v.join(', '):typeof v==='object'?JSON.stringify(v):String(v??'—')])];const width=1400,pad=70,line=34;const wrap=(ctx:CanvasRenderingContext2D,text:string,max:number)=>{const words=text.split(/\s+/),out:string[]=[];let cur='';for(const w of words){const next=cur?cur+' '+w:w;if(ctx.measureText(next).width>max&&cur){out.push(cur);cur=w}else cur=next}if(cur)out.push(cur);return out};const probe=document.createElement('canvas').getContext('2d')!;probe.font='26px Arial';let height=220;for(const [,v] of rows)height+=line*(1+wrap(probe,String(v),width-pad*2-330).length)+18;const canvas=document.createElement('canvas');canvas.width=width;canvas.height=Math.max(height,500);const ctx=canvas.getContext('2d')!;ctx.fillStyle='#0b1016';ctx.fillRect(0,0,width,canvas.height);ctx.fillStyle='#fff';ctx.font='bold 42px Arial';ctx.fillText('LSPD · ARCHIVE OPÉRATIONNELLE',pad,80);ctx.font='24px Arial';ctx.fillStyle='#9fb3c8';ctx.fillText('Dossier définitif · '+operation.id,pad,125);let y=190;for(const [k,v] of rows){ctx.fillStyle='#6ea8d7';ctx.font='bold 22px Arial';ctx.fillText(String(k),pad,y);ctx.fillStyle='#fff';ctx.font='26px Arial';const lines=wrap(ctx,String(v),width-pad*2-330);lines.forEach((t,i)=>ctx.fillText(t,pad+330,y+i*line));y+=line*Math.max(1,lines.length)+18}const a=document.createElement('a');a.download='LSPD-'+(operation.operation_type||'operation')+'-'+operation.id.slice(0,8)+'.png';a.href=canvas.toDataURL('image/png');a.click()}
- async function loadApplications(){if(!manager||!panelAccess.management_applications)return;const {data}=await (await import('../lib/supabase')).supabase.from('applications').select('*') .not('submitted_at','is',null).is('archived_at',null).order('created_at',{ascending:false});setApplications(data??[])}
+ function downloadArchivePng(operation:any){
+  const d=operation.final_details||operation.details||{};
+  const val=(v:any)=>v===true||v==='oui'?'OUI':v===false||v==='non'?'NON':String(v??'').trim()||'—';
+  const sections=[
+    {title:'IDENTIFICATION DU RAPPORT',rows:[
+      ['Intitulé',operation.title||'BRAQUAGE'],
+      ['Rapport ouvert par',operation.opened_by?.display_name?operation.opened_by.display_name+(operation.opened_by.badge_number?' · Matricule '+operation.opened_by.badge_number:''):'Agent inconnu'],
+      ['Créé le',new Date(operation.created_at).toLocaleString('fr-FR')],
+      ['Clôturé le',operation.closed_at?new Date(operation.closed_at).toLocaleString('fr-FR'):'—']
+    ]},
+    {title:'CHRONOLOGIE & LOCALISATION',rows:[['Date',val(d.date)],['Heure de début',val(d.start_time)],['Heure de fin (avant course-poursuite)',val(d.end_time)],['Lieu',val(d.location)],['Type de braquage',val(d.robbery_type)]]},
+    {title:'AGENTS ENGAGÉS',rows:[['Agents / matricules / unités',val(d.officers)]]},
+    {title:'SUSPECTS',rows:[['Nombre de suspects',val(d.suspect_count)],['Identités / informations',val(d.suspects)],['Photos suspects / cartes d’identité',val(d.suspect_photos)]]},
+    {title:'OTAGES',rows:[['Nombre d’otages',val(d.hostage_count)],['Identités / informations',val(d.hostages)],['Photos otages / cartes d’identité',val(d.hostage_photos)]]},
+    {title:'USAGE DE LA FORCE',rows:[['Usage de la force',val(d.force_used)],['Arme à feu',val(d.firearm_used)],['Taser',val(d.taser_used)],['Force physique',val(d.physical_force_used)]]},
+    {title:'BLESSÉS',rows:[['Forces de l’ordre',val(d.law_injured)],['Civils',val(d.civilian_injured)],['Suspects',val(d.suspect_injured)]]},
+    {title:'ÉLÉMENTS SAISIS',rows:[['Éléments saisis',val(d.seized_items)]]},
+    {title:'PREUVES PHOTOGRAPHIQUES',rows:[['Plaques / véhicules / braqueurs',val(d.evidence_photos)],['Notes associées',val(d.evidence_notes)]]}
+  ];
+  const width=1600,pad=80,labelWidth=430,lineH=36,contentWidth=width-pad*2-labelWidth;
+  const probe=document.createElement('canvas').getContext('2d')!;
+  const wrap=(ctx:CanvasRenderingContext2D,text:string,max:number)=>{const paragraphs=String(text).split(/\n/),out:string[]=[];for(const paragraph of paragraphs){const words=paragraph.split(/\s+/).filter(Boolean);if(!words.length){out.push('');continue}let line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>max&&line){out.push(line);line=word}else line=next}if(line)out.push(line)}return out.length?out:['—']};
+  probe.font='27px Arial';
+  let height=190;
+  for(const section of sections){height+=68;for(const [,v] of section.rows){height+=Math.max(1,wrap(probe,String(v),contentWidth).length)*lineH+30}height+=24}
+  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=Math.max(height,900);
+  const ctx=canvas.getContext('2d')!;
+  ctx.fillStyle='#0a0f15';ctx.fillRect(0,0,width,canvas.height);
+  ctx.fillStyle='#ffffff';ctx.font='bold 48px Arial';ctx.fillText('LOS SANTOS POLICE DEPARTMENT',pad,72);
+  ctx.fillStyle='#7fb8e6';ctx.font='bold 30px Arial';ctx.fillText('RAPPORT DÉFINITIF · BRAQUAGE',pad,120);
+  ctx.fillStyle='#93a4b5';ctx.font='20px Arial';ctx.fillText('Archive '+operation.id,pad,154);
+  let y=205;
+  for(const section of sections){
+    ctx.fillStyle='#102231';ctx.fillRect(pad,y-35,width-pad*2,54);
+    ctx.fillStyle='#7fc7ff';ctx.font='bold 25px Arial';ctx.fillText(section.title,pad+20,y);
+    y+=58;
+    for(const [label,value] of section.rows){
+      ctx.font='bold 23px Arial';ctx.fillStyle='#9eb4c7';ctx.fillText(label,pad+12,y);
+      ctx.font='27px Arial';ctx.fillStyle='#ffffff';
+      const lines=wrap(ctx,String(value),contentWidth);
+      lines.forEach((line,i)=>ctx.fillText(line,pad+labelWidth,y+i*lineH));
+      y+=Math.max(1,lines.length)*lineH+30;
+      ctx.strokeStyle='#1d3344';ctx.beginPath();ctx.moveTo(pad,y-16);ctx.lineTo(width-pad,y-16);ctx.stroke();
+    }
+    y+=24;
+  }
+  const a=document.createElement('a');const type=String(d.robbery_type||'braquage').trim().replace(/[^a-zA-Z0-9_-]+/g,'-');const date=String(d.date||'archive');
+  a.download='LSPD-BRAQUAGE-'+type+'-'+date+'.png';a.href=canvas.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove();
+} async function loadApplications(){if(!manager||!panelAccess.management_applications)return;const {data}=await (await import('../lib/supabase')).supabase.from('applications').select('*') .not('submitted_at','is',null).is('archived_at',null).order('created_at',{ascending:false});setApplications(data??[])}
  async function loadAppointments(){if(!manager||!panelAccess.management_appointments)return;const {data}=await (await import('../lib/supabase')).supabase.from('appointments').select('*').is('archived_at',null).order('created_at',{ascending:false});setAppointments(data??[])}
  async function loadApplicationArchives(){if(!manager||!panelAccess.management_application_archives)return;const {data}=await (await import('../lib/supabase')).supabase.from('applications').select('*').not('submitted_at','is',null).order('created_at',{ascending:false});setApplicationArchives(data??[])}
  async function loadAppointmentArchives(){if(!manager||!panelAccess.management_appointment_archives)return;const {data}=await (await import('../lib/supabase')).supabase.from('appointments').select('*').order('created_at',{ascending:false});setAppointmentArchives(data??[])}
