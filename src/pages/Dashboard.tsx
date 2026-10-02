@@ -116,6 +116,7 @@ function ArchiveList({title,items,kind,open}:{title:string;items:any[];kind:'app
 
 function SearchForm({value,onChange,saveState,readOnly=false}:{value:any;onChange:(v:any)=>void;saveState:'idle'|'saving'|'saved'|'error';readOnly?:boolean}){
  const set=(k:string,v:any)=>onChange({...value,[k]:v});
+ const yn=(k:string,label:string)=><div className="robbery-check"><span>{label}</span><div className="robbery-binary"><label><input type="checkbox" checked={value[k]==='oui'} onChange={()=>set(k,value[k]==='oui'?'':'oui')}/><b>OUI</b></label><label><input type="checkbox" checked={value[k]==='non'} onChange={()=>set(k,value[k]==='non'?'':'non')}/><b>NON</b></label></div></div>;
  return <fieldset className="robbery-form" disabled={readOnly}>
   <div className="robbery-form-head"><div><small>FICHE OPÉRATIONNELLE</small><h3>PERQUISITION</h3></div><span className={`autosave-state ${saveState}`}>{saveState==='saving'?'BROUILLON…':saveState==='saved'?'BROUILLON ENREGISTRÉ':saveState==='error'?'ERREUR DE SAUVEGARDE':'BROUILLON AUTOMATIQUE'}</span></div>
   <section className="robbery-block"><h4>INFORMATIONS DE LA PERQUISITION</h4><div className="robbery-grid">
@@ -129,6 +130,7 @@ function SearchForm({value,onChange,saveState,readOnly=false}:{value:any;onChang
   <section className="robbery-block"><h4>AGENTS ENGAGÉS</h4><textarea value={value.officers??''} onChange={e=>set('officers',e.target.value)} placeholder="Noms, matricules et unités des agents engagés"/></section>
   <section className="robbery-block"><h4>SUSPECT ARRÊTÉ</h4><textarea value={value.arrested_suspect??''} onChange={e=>set('arrested_suspect',e.target.value)} placeholder="Identité et informations du suspect arrêté"/></section>
   <section className="robbery-block"><h4>OBJETS SAISIS DURANT LA PERQUISITION</h4><textarea value={value.seized_items??''} onChange={e=>set('seized_items',e.target.value)} placeholder="Armes, munitions, stupéfiants, argent, documents ou autres objets saisis"/></section>
+  <section className="robbery-block"><h4>USAGE DE LA FORCE & BLESSÉS</h4><div className="robbery-yesno">{yn('force_used','Usage de la force')}{yn('officer_injured','Agent blessé')}{yn('suspect_injured','Suspect blessé')}</div>{value.officer_injured==='oui'&&<div className="robbery-grid"><label>Identité de l’agent blessé<input value={value.officer_injured_identity??''} onChange={e=>set('officer_injured_identity',e.target.value)} placeholder="Nom, prénom, matricule…"/></label></div>}{value.suspect_injured==='oui'&&<div className="robbery-grid"><label>Identité du suspect blessé<input value={value.suspect_injured_identity??''} onChange={e=>set('suspect_injured_identity',e.target.value)} placeholder="Nom, prénom, numéro d’identité…"/></label></div>}</section>
  </fieldset>
 }
 
