@@ -119,7 +119,7 @@ function SearchForm({value,onChange,saveState,readOnly=false}:{value:any;onChang
  return <fieldset className="robbery-form" disabled={readOnly}>
   <div className="robbery-form-head"><div><small>FICHE OPÉRATIONNELLE</small><h3>PERQUISITION</h3></div><span className={`autosave-state ${saveState}`}>{saveState==='saving'?'BROUILLON…':saveState==='saved'?'BROUILLON ENREGISTRÉ':saveState==='error'?'ERREUR DE SAUVEGARDE':'BROUILLON AUTOMATIQUE'}</span></div>
   <section className="robbery-block"><h4>INFORMATIONS DE LA PERQUISITION</h4><div className="robbery-grid">
-   <label>Type de perquisition<select value={value.search_type??''} onChange={e=>set('search_type',e.target.value)}><option value="">Sélectionner…</option><option value="batiment">Bâtiment</option><option value="hangar">Hangar</option><option value="maison">Maison</option><option value="vehicule">Véhicule</option></select></label>
+   <label>Type de perquisition<input value={value.search_type??''} onChange={e=>set('search_type',e.target.value)} placeholder="Décrire librement le type de perquisition"/></label>
    <label>Lieu de la perquisition<input value={value.location??''} onChange={e=>set('location',e.target.value)} placeholder="Adresse ou lieu de la perquisition"/></label>
    <label>Date de la perquisition<input type="date" value={value.date??''} onChange={e=>set('date',e.target.value)}/></label>
    <label>Heure de la perquisition<input type="time" value={value.time??''} onChange={e=>set('time',e.target.value)}/></label>
