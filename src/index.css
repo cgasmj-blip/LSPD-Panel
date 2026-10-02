@@ -166,3 +166,10 @@
 .rank-extra-access button span{white-space:nowrap}
 .rank-extra-access button.enabled{border-color:#2789d4;background:#0a2234;color:#82c9ff;box-shadow:0 0 8px rgba(47,157,240,.22),inset 0 0 8px rgba(47,157,240,.08)}
 .rank-extra-access button.enabled i{background:#45adff;box-shadow:0 0 4px #45adff,0 0 10px rgba(69,173,255,.9)}
+
+.complaint-form .robbery-block>p{max-width:900px;line-height:1.65;color:#aeb9c0}
+.complaint-witness{margin:12px 0;padding:14px;border:1px solid #202b32;background:#0a0f12}
+.complaint-witness+.complaint-witness{margin-top:16px}
+.complaint-form textarea{min-height:110px}
+.complaint-form .photo-zone{grid-column:span 2}
+@media(max-width:760px){.complaint-form .photo-zone{grid-column:span 1}}
