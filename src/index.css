@@ -159,3 +159,10 @@
 .operation-dossier-page{width:100%;max-width:1280px;margin:0 auto}.operation-dossier-page>.hero-mdt{margin-top:0}.operation-dossier-page>.section{margin-top:10px}.operation-dossier-page .robbery-form{margin-top:18px}
 
 .autosave-state{font-size:9px;font-weight:900;letter-spacing:.09em;color:#7891a3;border:1px solid #263946;background:#0a1218;padding:8px 10px;border-radius:3px}.autosave-state.saving{color:#e8b75b;border-color:#59472a}.autosave-state.saved{color:#72c99b;border-color:#28533e}.autosave-state.error{color:#ef8585;border-color:#663333}
+
+/* Grade access status switches */
+.rank-extra-access button{display:inline-flex;align-items:center;gap:6px;min-width:0;padding:0 7px;background:#090d10;border-color:#222c33;color:#53616b;box-shadow:none;transition:border-color .18s,background .18s,color .18s,box-shadow .18s}
+.rank-extra-access button i{display:block;width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#303a41;box-shadow:inset 0 0 0 1px #46525a;transition:background .18s,box-shadow .18s}
+.rank-extra-access button span{white-space:nowrap}
+.rank-extra-access button.enabled{border-color:#2789d4;background:#0a2234;color:#82c9ff;box-shadow:0 0 8px rgba(47,157,240,.22),inset 0 0 8px rgba(47,157,240,.08)}
+.rank-extra-access button.enabled i{background:#45adff;box-shadow:0 0 4px #45adff,0 0 10px rgba(69,173,255,.9)}
