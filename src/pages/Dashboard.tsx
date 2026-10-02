@@ -122,7 +122,7 @@ function SearchForm({value,onChange,saveState,readOnly=false}:{value:any;onChang
    <label>Type de perquisition<input value={value.search_type??''} onChange={e=>set('search_type',e.target.value)} placeholder="Décrire librement le type de perquisition"/></label>
    <label>Lieu de la perquisition<input value={value.location??''} onChange={e=>set('location',e.target.value)} placeholder="Adresse ou lieu de la perquisition"/></label>
    <label>Date de la perquisition<input type="date" value={value.date??''} onChange={e=>set('date',e.target.value)}/></label>
-   <label>Heure de la perquisition<input type="time" value={value.time??''} onChange={e=>set('time',e.target.value)}/></label>
+   
    <label>Heure de début de perquisition<input type="time" value={value.start_time??''} onChange={e=>set('start_time',e.target.value)}/></label>
    <label>Heure de fin de perquisition<input type="time" value={value.end_time??''} onChange={e=>set('end_time',e.target.value)}/></label>
   </div></section>
