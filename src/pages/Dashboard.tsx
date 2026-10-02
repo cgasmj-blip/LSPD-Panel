@@ -46,14 +46,7 @@ export function Dashboard({staff}:{staff:Staff}){
    '<section><h2>DÉCLARATION DU PLAIGNANT</h2><div class="statement">'+esc(d.statement)+'</div></section>'+
    '<section><h2>SUSPECT(S)</h2><table>'+rowHtml('Nom / prénom',d.suspect_name)+rowHtml('Description physique',d.suspect_description)+rowHtml('Adresse',d.suspect_address)+rowHtml('Lien avec le plaignant',d.suspect_link)+'</table></section>'+
    '<section><h2>TÉMOINS</h2><table>'+witnesses+'</table></section>'+
-   '<section><h2>PRÉJUDICES & PIÈCES FOURNIES</h2><table>'+rowHtml('Préjudice matériel estimé',d.material_damage?d.material_damage+' $':'—')+rowHtml('Préjudice corporel',yes(d.bodily_harm))+rowHtml('Autre préjudice',d.other_damage)+rowHtml('Pièces fournies',evidence)+rowHtml('Références / précisions',d.evidence_details)+'</table></section>'+
-   '<section><h2>DÉCLARATION SUR L’HONNEUR</h2><div class="statement">Je soussigné(e) '+esc(d.sworn_name)+' certifie que les informations fournies dans ce dépôt de plainte sont exactes et sincères. Je suis informé(e) que toute fausse déclaration est passible de poursuites pénales.</div><table class="signatures">'+rowHtml('Signature plaignant',d.complainant_signature)+rowHtml('Signature de l’agent',d.officer_signature)+'</table></section></main></body></html>';
-  const readme='Pièces déclarées dans le dépôt de plainte : '+evidence+'\\n\\nRéférences / liens :\\n'+String(d.evidence_details||'Aucune référence renseignée.')+'\\n\\nPhoto carte d’identité :\\n'+String(d.id_photo||'Non renseignée.');
-  const files:Record<string,Uint8Array>={'rapport.html':strToU8(html),'pieces/README.txt':strToU8(readme)};
-  const zipped=zipSync(files,{level:6}),blob=new Blob([zipped],{type:'application/zip'}),a=document.createElement('a');
-  const safe=(v:any,fallback:string)=>String(v||fallback).trim().replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-+|-+$/g,'')||fallback,date=String(d.report_date||d.event_date||'archive').replace(/\\//g,'-');
-  a.download='LSPD-DEPOT-DE-PLAINTE-'+safe(d.last_name,'PLAIGNANT')+'-'+date+'.zip';a.href=URL.createObjectURL(blob);document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
- }
+   '<section><h2>PRÉJUDICES & PIÈCES FOURNIES</h2><table>'+rowHtml('Préjudice matériel estimé',d.material_damage?d.material_damage+' 
  const divisions=staff.divisions??[]
  const divisionCallsign=(d:string)=>({SWAT:'Goliath',HSP:'Sierra',MARY:'Mary',DOA:'David','BANALISÉ':'David',BANALISE:'David','K-9':'K9',K9:'K9','HÉLIPORTÉ':'Henry',HELIPORTE:'Henry','HÉLIPORTÉS':'Henry',HELIPORTES:'Henry',NAUTIQUE:'William',CYCLISTE:'Victor'} as Record<string,string>)[d.toUpperCase()]||d
  const manager=!!panelAccess.management
@@ -241,6 +234,22 @@ function ComplaintForm({value,onChange,staff,readOnly=false,saveState='idle'}:{v
   <section className="robbery-block"><h4>DÉCLARATION SUR L’HONNEUR</h4><p>Je soussigné(e), certifie que les informations fournies dans ce dépôt de plainte sont exactes et sincères. Je suis informé(e) que toute fausse déclaration est passible de poursuites pénales.</p><div className="robbery-grid"><label>Mr / Mme — Nom du déclarant<input value={value.sworn_name??''} onChange={e=>set('sworn_name',e.target.value)}/></label><label>Signature plaignant<input value={value.complainant_signature??''} onChange={e=>set('complainant_signature',e.target.value)} placeholder="Nom / signature"/></label><label>Signature de l’agent<input value={value.officer_signature??''} onChange={e=>set('officer_signature',e.target.value)} placeholder={staff.display_name}/></label></div></section>
  </fieldset>
 }
+:'—')+rowHtml('Préjudice corporel',yes(d.bodily_harm))+rowHtml('Autre préjudice',d.other_damage)+rowHtml('Pièces fournies',evidence)+rowHtml('Références / précisions',d.evidence_details)+'</table></section>'+
+   '<section><h2>DÉCLARATION SUR L’HONNEUR</h2><div class="statement">Je soussigné(e) '+esc(d.sworn_name)+' certifie que les informations fournies dans ce dépôt de plainte sont exactes et sincères. Je suis informé(e) que toute fausse déclaration est passible de poursuites pénales.</div><table class="signatures">'+rowHtml('Signature plaignant',d.complainant_signature)+rowHtml('Signature de l’agent',d.officer_signature)+'</table></section></main></body></html>';
+  const readme='Pièces déclarées dans le dépôt de plainte : '+evidence+'\\n\\nRéférences / liens :\\n'+String(d.evidence_details||'Aucune référence renseignée.')+'\\n\\nPhoto carte d’identité :\\n'+String(d.id_photo||'Non renseignée.');
+  const files:Record<string,Uint8Array>={'rapport.html':strToU8(html),'pieces/README.txt':strToU8(readme)};
+  const zipped=zipSync(files,{level:6});
+  const blob=new Blob([zipped],{type:'application/zip'});
+  const a=document.createElement('a');
+  const safe=(v:any,fallback:string)=>String(v||fallback).trim().replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-+|-+$/g,'')||fallback;
+  const date=String(d.report_date||d.event_date||'archive').replace(/\//g,'-');
+  a.download='LSPD-DEPOT-DE-PLAINTE-'+safe(d.last_name,'PLAIGNANT')+'-'+date+'.zip';
+  a.href=URL.createObjectURL(blob);
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+ }
  const divisions=staff.divisions??[]
  const divisionCallsign=(d:string)=>({SWAT:'Goliath',HSP:'Sierra',MARY:'Mary',DOA:'David','BANALISÉ':'David',BANALISE:'David','K-9':'K9',K9:'K9','HÉLIPORTÉ':'Henry',HELIPORTE:'Henry','HÉLIPORTÉS':'Henry',HELIPORTES:'Henry',NAUTIQUE:'William',CYCLISTE:'Victor'} as Record<string,string>)[d.toUpperCase()]||d
  const manager=!!panelAccess.management
