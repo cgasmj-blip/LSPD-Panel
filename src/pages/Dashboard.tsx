@@ -69,8 +69,8 @@ export function Dashboard({staff}:{staff:Staff}){
  const manager=!!panelAccess.management
  const settingsAccess=!!panelAccess.settings
  const operationsAccess=!!panelAccess.operations
- const doaAccess=divisions.some(d=>d.toUpperCase()==='DOA')
- const doaCanCreate=['responsable','co-responsable'].includes(String((staff as any).doa_role||'').toLowerCase())
+ const doaAccess=divisions.some(d=>d.toUpperCase().includes('DOA'))
+ const doaCanCreate=['responsable','co-responsable'].includes(String((staff as any).doa_role||'').toLowerCase())||divisions.some(d=>{const n=d.toLowerCase();return n.includes('doa')&&(n.includes('responsable')||n.includes('co-resp'))})
  useEffect(()=>{if(tab==='doa'&&doaAccess&&!doaProfile)void loadDoaProfiles()},[tab,doaAccess,doaProfile])
  const k9Access=divisions.some(d=>['K-9','K9'].includes(d.toUpperCase()))
  useEffect(()=>{if(((tab==='doa'&&!doaAccess)||(tab==='k9'&&!k9Access)))setTab('service')},[tab,doaAccess,k9Access])
