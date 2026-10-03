@@ -7,7 +7,7 @@ import {Appointment} from './pages/Appointment'
 import {Regulations} from './pages/Regulations'
 import {VehicleAssignments} from './pages/VehicleAssignments'
 import {RadioCommunication} from './pages/RadioCommunication'
-const fields='id,display_name,badge_number,rank,app_role,divisions,active'
+const fields='id,display_name,badge_number,rank,app_role,divisions,doa_role,active'
 const logo='https://cdn.picflow.com/assets/images/proxy/full/13da8b62-5943-40f5-9872-a24bd5cbb7f1.webp'
 type PublicContent={id:string;content_type:'regulation'|'information'|'announcement';title:string;body:string}
 export default function App(){
