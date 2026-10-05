@@ -127,6 +127,7 @@ export function Dashboard({staff}:{staff:Staff}){
  const manager=!!panelAccess.management
  const settingsAccess=!!panelAccess.settings
  const operationsAccess=!!panelAccess.operations
+ // PA access: Responsable P.A, Recruteur P.A et Formateur P.A uniquement
  const paCanCorrect=divisions.some(d=>{const n=d.toLowerCase().replace(/\s+/g,' ').trim();return n.includes('responsable p.a')||n.includes('recruteur p.a')||n.includes('formateur p.a')||n.includes('responsable pa')||n.includes('recruteur pa')||n.includes('formateur pa')})
  const doaAccess=divisions.some(d=>d.toUpperCase().includes('DOA'))
  const hspAccess=divisions.some(d=>d.toUpperCase().includes('HSP'))
