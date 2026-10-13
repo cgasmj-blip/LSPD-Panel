@@ -133,7 +133,7 @@ export function Dashboard({staff}:{staff:Staff}){
  async function removeDoaPostImage(img:any){if(!confirm('Retirer cette photo du post ?'))return;setBusy(true);const {error:se}=await supabase.storage.from('doa-media').remove([img.image_path]);if(se){setBusy(false);setError(se.message);return}const {error:e}=await supabase.from('doa_tile_images').delete().eq('id',img.id);setBusy(false);if(e)setError(e.message);else setDoaTileImages(prev=>prev.filter(x=>x.id!==img.id))}
  async function deleteDoaPost(post:any){if(!confirm('Supprimer définitivement ce post et toutes ses photos ?'))return;setBusy(true);setError('');const imgs=doaTileImages.filter(img=>img.post_id===post.id);if(imgs.length){const {error:se}=await supabase.storage.from('doa-media').remove(imgs.map(img=>img.image_path));if(se){setBusy(false);setError(se.message);return}}const {error:e}=await supabase.from('doa_posts').delete().eq('id',post.id);setBusy(false);if(e){setError(e.message);return}setDoaPosts(prev=>prev.filter(p=>p.id!==post.id));setDoaTileImages(prev=>prev.filter(img=>img.post_id!==post.id))}
  function doaImage(path:string){return supabase.storage.from('doa-media').getPublicUrl(path).data.publicUrl}
- useEffect(()=>{if(tab==='ppa'&&!ppaRoleAccess)setTab('service')},[tab,ppaRoleAccess])
+
  async function refreshPpaRole(){
   setBusy(true);setError('');
   try{
@@ -148,6 +148,7 @@ export function Dashboard({staff}:{staff:Staff}){
  const [ppaLiveAccess,setPpaLiveAccess]=useState<boolean>(staff.ppa_access===true)
  useEffect(()=>{let alive=true;const refresh=async()=>{const {data}=await supabase.from('staff').select('ppa_access').eq('id',staff.id).maybeSingle();if(alive)setPpaLiveAccess(data?.ppa_access===true)};void refresh();const timer=window.setInterval(()=>void refresh(),15000);return()=>{alive=false;window.clearInterval(timer)}},[staff.id])
  const ppaRoleAccess=ppaLiveAccess||(staff.divisions??[]).some(d=>d.includes('Formateur PPA/PDC'))
+ useEffect(()=>{if(tab==='ppa'&&!ppaRoleAccess)setTab('service')},[tab,ppaRoleAccess])
  const divisionCallsign=(d:string)=>({SWAT:'Goliath',HSP:'Sierra',MARY:'Mary',DOA:'David','BANALISÉ':'David',BANALISE:'David','K-9':'K9',K9:'K9','HÉLIPORTÉ':'Henry',HELIPORTE:'Henry','HÉLIPORTÉS':'Henry',HELIPORTES:'Henry',NAUTIQUE:'William',CYCLISTE:'Victor'} as Record<string,string>)[d.toUpperCase()]||d
  const manager=!!panelAccess.management
  const settingsAccess=!!panelAccess.settings
