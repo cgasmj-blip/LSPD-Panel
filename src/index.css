@@ -173,3 +173,36 @@
 .complaint-form textarea{min-height:110px}
 .complaint-form .photo-zone{grid-column:span 2}
 @media(max-width:760px){.complaint-form .photo-zone{grid-column:span 1}}
+
+
+/* Division directory — LSPD visual system */
+.division-directory-toolbar{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:18px 20px;margin-bottom:18px;background:linear-gradient(115deg,#101d28,#0a1118);border:1px solid #294255;border-left:3px solid #429bd7;border-radius:5px}
+.division-directory-toolbar strong{color:#e7f2fb;font-size:16px;letter-spacing:.03em}
+.division-directory-toolbar p,.division-directory-empty p{color:#8fa5b5;margin:6px 0 0;font-size:13px}
+.division-directory-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.division-directory-primary,.division-directory-secondary{display:inline-flex;gap:9px;align-items:center;justify-content:center;padding:11px 16px;border-radius:4px;font-size:12px;font-weight:800;letter-spacing:.06em;cursor:pointer;transition:background .2s,border-color .2s}
+.division-directory-primary{background:#1b689c;border:1px solid #4ca9e6;color:#fff}
+.division-directory-primary:hover{background:#257fb9}
+.division-directory-secondary{background:#111d27;border:1px solid #31516a;color:#a9d8f7}
+.division-directory-secondary:hover{background:#1a3142}
+.division-directory-primary:disabled{opacity:.6;cursor:wait}
+.division-directory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:15px}
+.division-directory-card{background:linear-gradient(160deg,#111e29,#0a1118);border:1px solid #2a3d4c;border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:18px}
+.division-directory-card-head{display:flex;align-items:center;gap:13px;border-bottom:1px solid #273a48;padding-bottom:16px}
+.division-directory-icon{width:44px;height:44px;border-radius:6px;background:#173750;border:1px solid #32668b;display:grid;place-items:center;color:#77c7fb}
+.division-directory-card-head small,.division-directory-info small,.division-directory-editor-title small{display:block;color:#77add1;font-size:10px;letter-spacing:.12em;font-weight:800}
+.division-directory-card h3{margin:5px 0 0;font-size:18px;color:#f0f6fc}
+.division-directory-info{display:grid;gap:5px}
+.division-directory-info strong{color:#e4edf5;font-size:14px;margin-bottom:10px}
+.division-directory-card>.division-directory-secondary{align-self:flex-start;margin-top:auto}
+.division-directory-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:45px 18px;border:1px dashed #385268;border-radius:6px;color:#7bbce7;gap:8px}
+.division-directory-empty strong{color:#d9e9f5;font-size:16px}
+.division-directory-editor{margin-top:20px;padding:24px;background:linear-gradient(150deg,#132533,#0b151d);border:1px solid #35617d;border-radius:6px}
+.division-directory-editor-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.division-directory-editor-title h3{margin:6px 0 0;color:#e9f3fa;font-size:20px}
+.division-directory-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:20px}
+.division-directory-fields label{display:block;color:#c7d9e6;font-weight:700;font-size:12px}
+.division-directory-fields input{display:block;box-sizing:border-box;width:100%;margin-top:8px;padding:12px 13px;background:#09131c!important;color:#f2f7fb!important;border:1px solid #38566b!important;border-radius:4px;font:inherit;font-weight:500;outline:none}
+.division-directory-fields input:focus{border-color:#54b2f0!important;box-shadow:0 0 0 2px rgba(70,165,227,.17)}
+.division-directory-fields input::placeholder{color:#69879a}
+@media(max-width:680px){.division-directory-toolbar{align-items:stretch}.division-directory-actions{width:100%}.division-directory-fields{grid-template-columns:1fr}.division-directory-editor{padding:16px}}
