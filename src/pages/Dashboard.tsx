@@ -187,10 +187,11 @@ export function Dashboard({staff}:{staff:Staff}){
  useEffect(()=>{if(tab==='operations')setTab('service')},[tab])
  // PA access: Responsable P.A, Recruteur P.A et Formateur P.A uniquement
  const paCanCorrect=divisions.some(d=>{const n=d.toLowerCase().replace(/\s+/g,' ').trim();return n.includes('responsable p.a')||n.includes('recruteur p.a')||n.includes('formateur p.a')||n.includes('responsable pa')||n.includes('recruteur pa')||n.includes('formateur pa')})
- const doaAccess=divisions.some(d=>d.toUpperCase().includes('DOA'))
- const hspAccess=divisions.some(d=>d.toUpperCase().includes('HSP'))
- const swatAccess=divisions.some(d=>d.toUpperCase().includes('SWAT'))
- const maryAccess=divisions.some(d=>d.toUpperCase().includes('MARY'))
+ const commandantDivisionAccess=String(staff.rank||'').trim().toLowerCase()==='commandant'
+ const doaAccess=commandantDivisionAccess||divisions.some(d=>d.toUpperCase().includes('DOA'))
+ const hspAccess=commandantDivisionAccess||divisions.some(d=>d.toUpperCase().includes('HSP'))
+ const swatAccess=commandantDivisionAccess||divisions.some(d=>d.toUpperCase().includes('SWAT'))
+ const maryAccess=commandantDivisionAccess||divisions.some(d=>d.toUpperCase().includes('MARY'))
  const hspCanCreate=String((staff as any).hsp_role||'').toLowerCase()==='responsable'
  async function loadHspProfiles(){const {data,error:e}=await supabase.from('hsp_profiles').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:true});if(e)setError(e.message);else setHspProfiles(data||[])}
  async function createHspProfile(){if(!newHsp.last_name.trim()||!newHsp.first_name.trim()||!newHsp.badge_number.trim()){setError('Nom, prénom et matricule sont obligatoires.');return}setBusy(true);setError('');const {data,error:e}=await supabase.from('hsp_profiles').insert({...newHsp,last_name:newHsp.last_name.trim(),first_name:newHsp.first_name.trim(),badge_number:newHsp.badge_number.trim(),created_by:staff.id}).select('*').single();setBusy(false);if(e){setError(e.message);return}setHspProfiles(p=>[...p,data]);setNewHsp({last_name:'',first_name:'',badge_number:''});void openHspProfile(data)}
@@ -224,7 +225,7 @@ export function Dashboard({staff}:{staff:Staff}){
  const doaCanCreate=['responsable','co-responsable'].includes(String((staff as any).doa_role||'').toLowerCase())||divisions.some(d=>{const n=d.toLowerCase();return n.includes('doa')&&(n.includes('responsable')||n.includes('co-resp'))})
  useEffect(()=>{if(tab==='doa'&&doaAccess&&!doaProfile)void loadDoaProfiles()},[tab,doaAccess,doaProfile])
  useEffect(()=>{if(tab==='hsp'&&hspAccess&&!selectedHsp)void loadHspProfiles()},[tab,hspAccess,selectedHsp])
- const k9Access=divisions.some(d=>{const n=d.toUpperCase();return n.includes('K-9')||n.includes('K9')})
+ const k9Access=commandantDivisionAccess||divisions.some(d=>{const n=d.toUpperCase();return n.includes('K-9')||n.includes('K9')})
  const k9CanCreate=['responsable','co-responsable'].includes(String((staff as any).k9_role||'').toLowerCase())||divisions.some(d=>{const n=d.toLowerCase();return (n.includes('k-9')||n.includes('k9'))&&(n.includes('responsable')||n.includes('co-resp'))})
  useEffect(()=>{if(tab==='k9'&&k9Access&&!selectedK9)void loadK9Units()},[tab,k9Access,selectedK9])
  useEffect(()=>{if(((tab==='doa'&&!doaAccess)||(tab==='k9'&&!k9Access)||(tab==='hsp'&&!hspAccess)||(tab==='swat'&&!swatAccess)||(tab==='mary'&&!maryAccess)))setTab('service')},[tab,doaAccess,k9Access,hspAccess,swatAccess,maryAccess])
