@@ -154,7 +154,7 @@ export function Dashboard({staff}:{staff:Staff}){
  const ppaRoleAccess=ppaLiveAccess||(staff.divisions??[]).some(d=>d.includes('Formateur PPA/PDC'))
  useEffect(()=>{if((tab==='ppa'||tab==='pdc')&&!ppaRoleAccess)setTab('service')},[tab,ppaRoleAccess])
  const divisionCallsign=(d:string)=>({SWAT:'Goliath',HSP:'Sierra',MARY:'Mary',DOA:'David','BANALISÉ':'David',BANALISE:'David','K-9':'K9',K9:'K9','HÉLIPORTÉ':'Henry',HELIPORTE:'Henry','HÉLIPORTÉS':'Henry',HELIPORTES:'Henry',NAUTIQUE:'William',CYCLISTE:'Victor'} as Record<string,string>)[d.toUpperCase()]||d
- const divisionCanEdit=['admin','developer'].includes(String((staff as any).app_role||'').toLowerCase())
+ const divisionCanEdit=String(staff.rank||'').trim().toLowerCase()==='commandant'
  const loadDivisionDirectory=async()=>{const {data,error:e}=await supabase.from('division_directory').select('*').order('name');if(e)setError(e.message);else setDivisionDirectory(data||[])}
  const saveDivisionDirectory=async()=>{const values=Object.fromEntries(Object.entries(divisionForm).map(([k,v])=>[k,v.trim()]));if(Object.values(values).some(v=>!v)){setError('Tous les champs sont obligatoires');return}setDivisionSaving(true);setError('');const query=divisionEditing?supabase.from('division_directory').update(values).eq('id',divisionEditing):supabase.from('division_directory').insert(values);const {error:e}=await query;if(e)setError(e.message);else{setDivisionEditing(null);setDivisionForm({name:'',leader_first_name:'',leader_last_name:'',leader_badge:''});await loadDivisionDirectory()}setDivisionSaving(false)}
  const manager=!!panelAccess.management
