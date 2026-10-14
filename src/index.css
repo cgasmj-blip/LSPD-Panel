@@ -206,3 +206,9 @@
 .division-directory-fields input:focus{border-color:#54b2f0!important;box-shadow:0 0 0 2px rgba(70,165,227,.17)}
 .division-directory-fields input::placeholder{color:#69879a}
 @media(max-width:680px){.division-directory-toolbar{align-items:stretch}.division-directory-actions{width:100%}.division-directory-fields{grid-template-columns:1fr}.division-directory-editor{padding:16px}}
+
+
+.division-directory-fields select{display:block;box-sizing:border-box;width:100%;margin-top:8px;padding:12px 13px;background:#09131c;color:#f2f7fb;border:1px solid #38566b;border-radius:4px;font:inherit;font-weight:500;outline:none;cursor:pointer}
+.division-directory-fields select:focus{border-color:#54b2f0;box-shadow:0 0 0 2px rgba(70,165,227,.17)}
+.division-directory-fields select option{background:#09131c;color:#f2f7fb}
+.division-directory-hint{display:block;margin-top:8px;color:#8caabe;font-size:11px;font-weight:400;line-height:1.5}
