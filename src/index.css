@@ -214,3 +214,14 @@
 .division-directory-hint{display:block;margin-top:8px;color:#8caabe;font-size:11px;font-weight:400;line-height:1.5}
 
 .division-application-label{display:block;color:#c7d9e6;font-weight:700;font-size:12px;margin-bottom:18px}.division-application-label textarea{display:block;box-sizing:border-box;width:100%;margin-top:10px;min-height:130px;padding:13px;background:#09131c;color:#f2f7fb;border:1px solid #38566b;border-radius:4px;font:inherit;resize:vertical}.division-application-label textarea:focus{outline:none;border-color:#54b2f0;box-shadow:0 0 0 2px rgba(70,165,227,.17)}
+
+
+.division-decision-notifications{position:fixed;left:18px;top:110px;z-index:1000;width:min(340px,calc(100vw - 36px));display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 130px);overflow-y:auto;pointer-events:none}
+.division-decision-notice{pointer-events:auto;padding:19px;background:linear-gradient(145deg,#122a3d,#08141e);border:1px solid #4b9fd2;border-left:4px solid #62b7ee;border-radius:6px;box-shadow:0 12px 35px rgba(0,0,0,.6);color:#dbeaf4}
+.division-decision-notice small{font-size:10px;letter-spacing:.13em;font-weight:800;color:#83caff}
+.division-decision-notice h3{font-size:18px;margin:9px 0;color:#fff}
+.division-decision-notice p{line-height:1.6;font-size:13px}
+.division-decision-notice button{background:#1b689c;border:1px solid #54b2ee;color:#fff;border-radius:4px;padding:9px 24px;font-weight:800;letter-spacing:.08em;cursor:pointer}
+.division-decision-notice button:hover{background:#287fb6}
+.division-decision-notice button:disabled{opacity:.6}
+@media(max-width:600px){.division-decision-notifications{left:10px;top:75px;width:calc(100vw - 20px)}}
