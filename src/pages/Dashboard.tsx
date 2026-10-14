@@ -157,13 +157,15 @@ export function Dashboard({staff}:{staff:Staff}){
    window.location.reload();
   }catch(e:any){setError(e.message||'Synchronisation impossible')}finally{setBusy(false)}
  }
- const divisions=staff.divisions??[]
+ const [liveDivisionAccess,setLiveDivisionAccess]=useState<{rank:string,divisions:string[]}>({rank:staff.rank||'',divisions:staff.divisions??[]})
+ useEffect(()=>{let active=true;const refresh=async()=>{const {data}=await supabase.from('staff').select('rank,divisions').eq('id',staff.id).maybeSingle();if(active&&data)setLiveDivisionAccess({rank:data.rank||'',divisions:data.divisions??[]})};void refresh();const timer=window.setInterval(()=>void refresh(),60000);return()=>{active=false;window.clearInterval(timer)}},[staff.id])
+ const divisions=liveDivisionAccess.divisions
  const [ppaLiveAccess,setPpaLiveAccess]=useState<boolean>(staff.ppa_access===true)
  useEffect(()=>{let alive=true;const refresh=async()=>{const {data}=await supabase.from('staff').select('ppa_access').eq('id',staff.id).maybeSingle();if(alive)setPpaLiveAccess(data?.ppa_access===true)};void refresh();const timer=window.setInterval(()=>void refresh(),15000);return()=>{alive=false;window.clearInterval(timer)}},[staff.id])
  const ppaRoleAccess=ppaLiveAccess||(staff.divisions??[]).some(d=>d.includes('Formateur PPA/PDC'))
  useEffect(()=>{if((tab==='ppa'||tab==='pdc')&&!ppaRoleAccess)setTab('service')},[tab,ppaRoleAccess])
  const divisionCallsign=(d:string)=>({SWAT:'Goliath',HSP:'Sierra',MARY:'Mary',DOA:'David','BANALISÉ':'David',BANALISE:'David','K-9':'K9',K9:'K9','HÉLIPORTÉ':'Henry',HELIPORTE:'Henry','HÉLIPORTÉS':'Henry',HELIPORTES:'Henry',NAUTIQUE:'William',CYCLISTE:'Victor'} as Record<string,string>)[d.toUpperCase()]||d
- const divisionCanEdit=String(staff.rank||'').trim().toLowerCase()==='commandant'
+ const divisionCanEdit=String(liveDivisionAccess.rank||'').trim().toLowerCase()==='commandant'
  const loadRecentDivisionStaff=async()=>{const {data,error:e}=await supabase.rpc('recent_lspd_staff_for_divisions');if(e)setError(e.message);else setRecentDivisionStaff(data||[])}
  const loadDivisionDirectory=async()=>{const {data,error:e}=await supabase.from('division_directory').select('*').order('name');if(e)setError(e.message);else setDivisionDirectory(data||[])}
  const saveDivisionDirectory=async()=>{const selected=recentDivisionStaff.find(p=>p.staff_id===divisionLeaderId);if(!selected){setError('Sélectionnez un responsable connecté au cours des 7 derniers jours');return}const cleanName=String(selected.display_name||'').trim().split(/\s+/);const leader_first_name=cleanName.shift()||'';const leader_last_name=cleanName.join(' ');const values=Object.fromEntries(Object.entries({...divisionForm,leader_first_name,leader_last_name,leader_badge:String(selected.badge_number||''),leader_staff_id:selected.staff_id}).map(([k,v])=>[k,String(v).trim()]));if(Object.values(values).some(v=>!v)){setError('Tous les champs sont obligatoires');return}setDivisionSaving(true);setError('');const query=divisionEditing&&divisionEditing!=='new'?supabase.from('division_directory').update(values).eq('id',divisionEditing):supabase.from('division_directory').insert(values);const {error:e}=await query;if(e)setError(e.message);else{setDivisionEditing(null);setDivisionLeaderId('');setDivisionForm({name:'',leader_first_name:'',leader_last_name:'',leader_badge:''});await loadDivisionDirectory()}setDivisionSaving(false)}
@@ -187,7 +189,7 @@ export function Dashboard({staff}:{staff:Staff}){
  useEffect(()=>{if(tab==='operations')setTab('service')},[tab])
  // PA access: Responsable P.A, Recruteur P.A et Formateur P.A uniquement
  const paCanCorrect=divisions.some(d=>{const n=d.toLowerCase().replace(/\s+/g,' ').trim();return n.includes('responsable p.a')||n.includes('recruteur p.a')||n.includes('formateur p.a')||n.includes('responsable pa')||n.includes('recruteur pa')||n.includes('formateur pa')})
- const commandantDivisionAccess=String(staff.rank||'').trim().toLowerCase()==='commandant'
+ const commandantDivisionAccess=String(liveDivisionAccess.rank||'').trim().toLowerCase()==='commandant'
  const doaAccess=commandantDivisionAccess||divisions.some(d=>d.toUpperCase().includes('DOA'))
  const hspAccess=commandantDivisionAccess||divisions.some(d=>d.toUpperCase().includes('HSP'))
  const swatAccess=commandantDivisionAccess||divisions.some(d=>d.toUpperCase().includes('SWAT'))
