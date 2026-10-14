@@ -212,3 +212,5 @@
 .division-directory-fields select:focus{border-color:#54b2f0;box-shadow:0 0 0 2px rgba(70,165,227,.17)}
 .division-directory-fields select option{background:#09131c;color:#f2f7fb}
 .division-directory-hint{display:block;margin-top:8px;color:#8caabe;font-size:11px;font-weight:400;line-height:1.5}
+
+.division-application-label{display:block;color:#c7d9e6;font-weight:700;font-size:12px;margin-bottom:18px}.division-application-label textarea{display:block;box-sizing:border-box;width:100%;margin-top:10px;min-height:130px;padding:13px;background:#09131c;color:#f2f7fb;border:1px solid #38566b;border-radius:4px;font:inherit;resize:vertical}.division-application-label textarea:focus{outline:none;border-color:#54b2f0;box-shadow:0 0 0 2px rgba(70,165,227,.17)}
