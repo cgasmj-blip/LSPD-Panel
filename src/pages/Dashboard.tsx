@@ -20,10 +20,12 @@ export function Dashboard({staff}:{staff:Staff}){
   if(!doaResult.error)counts.DOA=unique(doaResult.data)
   if(!hspResult.error)counts.HSP=unique(hspResult.data)
   if(!k9Result.error)counts.K9=unique(k9Result.data)
+  // SWAT et MARY n'ont pas encore de fiches d'effectif opérationnelles.
+  // Ne pas confondre l'appartenance administrative avec une tuile d'agent créée.
+  counts.SWAT=0
+  counts.MARY=0
   if(!staffResult.error){
-   for(const key of ['SWAT','MARY','CID']){
-    counts[key]=(staffResult.data||[]).filter(a=>(a.divisions||[]).some((d:string)=>String(d).toUpperCase().includes(key))).length
-   }
+   counts.CID=(staffResult.data||[]).filter(a=>(a.divisions||[]).some((d:string)=>String(d).toUpperCase().includes('CID'))).length
   }
   setDivisionMemberCounts(counts)
  }
