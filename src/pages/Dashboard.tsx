@@ -2,7 +2,7 @@ import {Fragment,useEffect,useMemo,useRef,useState} from 'react'
 import {zipSync,strToU8} from 'fflate'
 import type {Staff} from '../lib/supabase'
 import cidLogo from '../assets/cid-logo.webp'
-import {chooseBadge,getServiceUnits,joinService,leaveService,signOut,startService,subscribeService,supabase} from '../lib/supabase'
+import {chooseBadge,getServiceUnits,installAutomaticServiceExit,joinService,leaveService,signOut,startService,subscribeService,supabase} from '../lib/supabase'
 import {LogOut,Shield,Users,UserRound,LockKeyhole,Radio,Settings,Archive,Crosshair,Landmark,Search,ShieldAlert} from 'lucide-react'
 import {SettingsCenter} from './SettingsCenter'
 export function Dashboard({staff}:{staff:Staff}){
@@ -78,6 +78,7 @@ export function Dashboard({staff}:{staff:Staff}){
  useEffect(()=>{if(!selectedComplaint||selectedComplaint.status!=='active'||complaintId.current!==selectedComplaint.id)return;if(!complaintHydrated.current){complaintHydrated.current=true;return}setComplaintSaveState('saving');const id=selectedComplaint.id,draft=complaintDraft;const timer=window.setTimeout(async()=>{const {error:e}=await supabase.from('complaints').update({details:draft,updated_at:new Date().toISOString()}).eq('id',id).eq('status','active');if(e){setError(e.message);setComplaintSaveState('error')}else{setComplaintSaveState('saved');setSelectedComplaint((x:any)=>x?.id===id?{...x,details:draft}:x)}},650);return()=>window.clearTimeout(timer)},[complaintDraft,selectedComplaint?.id])
  const refresh=async()=>{try{setUnits(await getServiceUnits())}catch(e:any){setError(e.message)}}
  useEffect(()=>{void refresh();void (async()=>{const {data}=await (await import('../lib/supabase')).supabase.rpc('my_panel_permissions');if(data)setPanelAccess(data)})();return subscribeService(()=>void refresh())},[])
+ useEffect(()=>installAutomaticServiceExit(),[])
  const myUnit=useMemo(()=>units.find(u=>u.service_unit_members?.some((m:any)=>m.staff_id===staff.id)),[units,staff.id])
  const completeAdam=units.some(u=>!u.division&&u.service_type==='adam'&&(u.service_unit_members?.length??0)===2)
  async function act(fn:()=>Promise<any>){setBusy(true);setError('');try{const r=await fn();if(r?.error)throw r.error;await refresh()}catch(e:any){setError(e.message||'Action impossible')}finally{setBusy(false)}}
