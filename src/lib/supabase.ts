@@ -2,7 +2,29 @@ import { createClient } from '@supabase/supabase-js'
 export const supabase=createClient('https://tzfkpveneldwzngjybqw.supabase.co','sb_publishable_vFmdIZ7qi-ufGL94FJGUWQ_I8PaYJwH')
 export type Staff={id:string;display_name:string;badge_number:string|null;rank:string;app_role:'officer'|'supervisor'|'admin'|'developer';divisions:string[];doa_role?:string|null;k9_role?:string|null;hsp_role?:string|null;justice_role?:'procureur'|'juge'|null;active:boolean;ppa_access?:boolean}
 export async function signInDiscord(){return supabase.auth.signInWithOAuth({provider:'discord',options:{redirectTo:'https://cgasmj-blip.github.io/LSPD-Panel/',scopes:'identify email guilds.members.read'}})}
-export async function signOut(){const r=await supabase.auth.signOut({scope:'local'});if(!r.error)window.location.replace('/LSPD-Panel/');return r}
+export async function signOut(){
+ // Fin du service avant suppression de la session d'authentification.
+ const duty=await leaveService()
+ if(duty.error)return duty
+ const r=await supabase.auth.signOut({scope:'local'})
+ if(!r.error)window.location.replace('/LSPD-Panel/')
+ return r
+}
+export function installAutomaticServiceExit(){
+ let token=''
+ let enabled=true
+ void supabase.auth.getSession().then(({data})=>{if(enabled)token=data.session?.access_token||''})
+ const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{token=session?.access_token||''})
+ const exit=()=>{
+  if(!token)return
+  // keepalive permet au navigateur de transmettre la demande malgré la fermeture de l'onglet.
+  void fetch('https://tzfkpveneldwzngjybqw.supabase.co/rest/v1/rpc/leave_service',{
+   method:'POST',keepalive:true,headers:{'apikey':'sb_publishable_vFmdIZ7qi-ufGL94FJGUWQ_I8PaYJwH','Authorization':'Bearer '+token,'Content-Type':'application/json'},body:'{}'
+  }).catch(()=>{})
+ }
+ window.addEventListener('pagehide',exit)
+ return()=>{enabled=false;subscription.unsubscribe();window.removeEventListener('pagehide',exit)}
+}
 
 export async function chooseBadge(badge:string){return supabase.rpc('choose_my_badge_number',{p_badge:badge})}
 export async function startService(type:'lincoln'|'adam'|'division',division:string|null=null){return supabase.rpc('start_service',{p_type:type,p_division:division})}
