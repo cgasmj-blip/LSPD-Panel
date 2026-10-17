@@ -195,7 +195,7 @@ export function Dashboard({staff}:{staff:Staff}){
  useEffect(()=>{if((tab==='ppa'||tab==='pdc')&&!ppaRoleAccess)setTab('service')},[tab,ppaRoleAccess])
  const divisionCallsign=(d:string)=>({SWAT:'Goliath',HSP:'Sierra',MARY:'Mary',DOA:'David','BANALISÉ':'David',BANALISE:'David','K-9':'K9',K9:'K9','HÉLIPORTÉ':'Henry',HELIPORTE:'Henry','HÉLIPORTÉS':'Henry',HELIPORTES:'Henry',NAUTIQUE:'William',CYCLISTE:'Victor'} as Record<string,string>)[d.toUpperCase()]||d
  const canForceEndService=['capitaine','captain','capitaine i','capitaine ii','commandant','commander','commandant adjoint'].includes(String(liveDivisionAccess.rank||'').trim().toLowerCase())
- async function forceEndService(target:any){if(!confirm('Retirer '+(target.staff?.display_name||'cet agent')+' du service ?'))return;await act(()=>supabase.rpc('force_end_staff_service',{p_staff_id:target.staff_id}))}
+ async function forceEndService(target:any){if(!confirm('Retirer '+(target.staff?.display_name||'cet agent')+' du service ?'))return;await act(async()=>await supabase.rpc('force_end_staff_service',{p_staff_id:target.staff_id}))}
  const divisionCanEdit=String(liveDivisionAccess.rank||'').trim().toLowerCase()==='commandant'
  const loadRecentDivisionStaff=async()=>{const {data,error:e}=await supabase.rpc('recent_lspd_staff_for_divisions');if(e)setError(e.message);else setRecentDivisionStaff(data||[])}
  useEffect(()=>{if(tab!=='divisionsDocs')return;void refreshDivisionMemberCounts();const timer=window.setInterval(()=>void refreshDivisionMemberCounts(),15000);return()=>window.clearInterval(timer)},[tab])
