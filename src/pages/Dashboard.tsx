@@ -217,7 +217,7 @@ export function Dashboard({staff}:{staff:Staff}){
  const emsSeniorResultAccess=(()=>{const r=String(liveDivisionAccess.rank||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[.\-_]/g,' ').replace(/\s+/g,' ').trim();return /^lieutenant\s*(1|i)(?:\b|$)/.test(r)||/^lieutenant\s*(2|ii)(?:\b|$)/.test(r)||r.includes('capitaine')||r.includes('commandant')})()
  const emsK9ResultAccess=emsSeniorResultAccess||String((staff as any).k9_role||'').toLowerCase().trim()==='responsable'
  const emsHspResultAccess=emsSeniorResultAccess||String((staff as any).hsp_role||'').toLowerCase().trim()==='responsable'
- const canOpenEmsResult=(view:string)=>view==='vet_followup'?emsK9ResultAccess:view==='medical_visit'?emsHspResultAccess:true
+ const canOpenEmsResult=(view:string)=>view==='vet_followup'?emsK9ResultAccess:view==='medical_visit'?emsHspResultAccess:view==='billing'||view==='criminal_record'?emsSeniorResultAccess:true
  useEffect(()=>{if(tab==='ems'&&!canOpenEmsResult(emsView))setEmsView('home')},[tab,emsView,emsK9ResultAccess,emsHspResultAccess])
  const emsDirectionAccess=isCommandant
  useEffect(()=>{if(tab==='ems'&&emsView==='direction'&&!emsDirectionAccess)setEmsView('home')},[tab,emsView,emsDirectionAccess])
